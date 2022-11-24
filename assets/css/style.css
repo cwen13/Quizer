@@ -1,0 +1,21 @@
+:root {
+}
+
+* {
+}
+
+html {
+  font-size: 62.5%;
+}
+
+header {
+  margin: 0.25rem 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+
+
