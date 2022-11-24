@@ -31,13 +31,6 @@ function timer () {
     } },1000);
 }
 
-function startTheGame() {
-  tearDownStart()
-
-  highscoresEl.setAttribute("visibility", "visible");
-  timerEl.setAttribute("visibility", "visible");
- 
-}
 
 
 function endTheGame() {
@@ -51,36 +44,37 @@ let answerEl3 = document.createElement("li");
 let answerEl4 = document.createElement("li");
 let buttonEl1 = document.createElement("button");
 let buttonEl2 = document.createElement("button");
+let buttonEl3 = document.createElement("button");
+let buttonEl4 = document.createElement("button");
+
+//let answers = [answerEl1,answerEl2,answerEl3,answerEl4,];
+//let buttons = [buttonEl1,buttonEl2,buttonEl3,buttonEl4,];
+
 
 function tearDownStart() {
   answerEl1.removeChild(buttonEl1);
   answerEl2.removeChild(buttonEl2);
   answersList.removeChild(answerEl1);
   answersList.removeChild(answerEl2);
-  document.querySelector("main").removeChild(answersList);
-  
 }
 
 function buildStartScreen() {
-  answersEl.appendChild(answersList);
 
+
+  answersEl.appendChild(answersList);
   buttonEl1.textContent = "1. Yes I do.";
   answerEl1.appendChild(buttonEl1);
   buttonEl1.setAttribute("class","yes");
   buttonEl1.setAttribute("style","visibility: visible;");
   answersList.appendChild(answerEl1);
   buttonEl1.addEventListener("click", startTheGame);
-  
-  
   buttonEl2.textContent = "2. No, don't bother me.";
   answerEl2.appendChild(buttonEl2);
   buttonEl1.setAttribute("class","no");
   buttonEl2.setAttribute("style","visibility: visible;");
   answersList.appendChild(answerEl2);
   buttonEl2.addEventListener("click", endTheGame);
-  
   answersEl.appendChild(answersList);
-  
   answersEl.setAttribute("style","display: flex; flex-direction: column;\
                           justify-content: center; font-size: 3rem;");
 }
@@ -88,7 +82,15 @@ function buildStartScreen() {
 function startScreen() {
   questionEl.textContent = "Do you want to play a game?";
   questionEl.setAttribute("style","font-size: 4rem;")
-  buildStartScreen()
+  buildStartScreen() 
+}
+
+function startTheGame(QnAs) {
+  tearDownStart()
+  highscoresEl.setAttribute("visibility", "visible");
+  timerEl.setAttribute("visibility", "visible");
+  console.log(QnAs["questions"]);
+  questionEl.textContent = QnAs;
   
 }
 
