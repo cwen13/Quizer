@@ -57,5 +57,5 @@ function startTheGame() {
  
 }
 
-//startScreen();
+startScreen();
 

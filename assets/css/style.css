@@ -14,8 +14,25 @@ header {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+button {
+  visibility: hidden;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
 
 }
 
+.timer {
+  visibility: hidden;
+}
 
 
+#quesiton {
+  
+}
