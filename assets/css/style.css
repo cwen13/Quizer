@@ -17,7 +17,7 @@ header {
 }
 
 button {
-  visibility: hidden;
+  visibility: visible;
 }
 
 main {
@@ -29,10 +29,10 @@ main {
 }
 
 .timer {
-  visibility: hidden;
+  visibility: visible;
 }
 
 
-#quesiton {
-  
+#quesiton ul ~ li {
+  font-size:4rem;  
 }
