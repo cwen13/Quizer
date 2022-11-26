@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Quizer</title>
-    <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
     <header>
@@ -15,6 +15,9 @@
 	  See the highscores!
 	</button>
       </section>
+      <section id="highscore">
+	Highscore:<span id="score">0</span>
+      </section>
       <section class="timer">
 	Time: <span id="time"> </span>
       </section>
@@ -22,13 +25,13 @@
     <main>
       <section id="question">Do you want to play this quiz game?</section>
       <section id="answers">
-	<ol start="A">
-	  <li><button type="button">Yes, I do.</button></li>
-	  <li><button type="button">No, don't bother me!</button></li>
-	  <li><button type="button"></button></li>
-	  <li><button type="button"></button></li>
-	</ol>
-    </section>
+	<ul>
+	  <li><button class="button" id="button1">Yes, I do.</button></li>
+	  <li><button class="button" id="button2">No, don't bother me!</button></li>
+	  <li><button class="button" id="button3"></button></li>
+	  <li><button class="button" id="button4"></button></li>
+	</ul>
+      </section>
       <section id="result"></section>
     </main>
     <script src="./assets/script.js"></script>
