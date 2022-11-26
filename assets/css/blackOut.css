@@ -1,0 +1,26 @@
+:root {
+  --text-color: #fff;
+  --background-color: #000;
+  --section0-color: pink;
+  --section1-color: purple;
+  --section2-color: red;
+}
+
+* {
+  background-color: var(--background-color);
+}
+
+header h1 {
+  color: var(--text-color);
+}
+
+#section0 {
+  color: var(--section0-color);
+}
+
+#section1 {
+  color: var(--section1-color);
+}
+#section2 {
+  color: var(--section2-color);
+}

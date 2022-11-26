@@ -16,23 +16,58 @@ header {
   justify-content: space-between;
 }
 
-button {
-  visibility: hidden;
-}
 
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
 
+}
+
+a {
+  background: black;
+  color: white;
 }
 
 .timer {
   visibility: hidden;
 }
 
+#question {
+  font-size: 3rem;
+  align-content:center;
+  margin: 3rem 0rem 1rem 0rem;
+}
 
-#quesiton {
-  
+#highscores button {
+  visibility: hidden;
+}
+
+#highscore {
+  visibility: hidden;
+}
+
+#answers ol ~ li {
+  font-size: 2rem;
+}
+
+#button1 {
+  visibilty:visible;
+  font-size: 1.5rem;
+}
+
+#button2 {
+  visibility: visible;
+  font-size: 1.5rem;
+}
+
+#button3 {
+  visibility: hidden;
+  font-size: 1.5rem;
+}
+
+#button4 {
+  visibility: hidden;
+  font-size: 1.5rem;
 }

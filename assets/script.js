@@ -2,98 +2,149 @@
 //--------JSON-Questions-&-Answers------------>
 const QnAs = {
   "questions": [
-    {"question0": "String for a question0?",
+    {"question": "String for a question0?",
       "Answers": ["A","B","C","D"],
       "Answer": "A"},
-    {"question1": "String for a question1?",
+    {"question": "String for the question1?",
       "Answers": ["A","B","C","D"],
       "Answer": "B"},
-    {"question2": "String for a question3?",
+    {"question": "String for this question3?",
       "Answers": ["A","B","C","D"],
       "Answer": "C"}]}
 //-------------------------------------------->
-let highscoresEl = document.querySelector("#highscores");
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
 let answersEl = document.querySelector("#answers");
 let resultEl = document.querySelector("#result");
-
+let answersEls = document.querySelectorAll("li");
+let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
-let secondsLeft = 90;
+let highscoresEl = document.querySelector("#highscores button");
+let highscoreEl = document.querySelector("#highscore");
+const secondsLeft = 90;
+let highscore = 0;
+let pick;
 timeEl.textContent = secondsLeft
 
-function timer () {
+function timer (seconds) {
   let countDown = setInterval(function(){
-    secondsLeft--;
-    timeEl.textContent = secondsLeft.toString();
-    if (secondsLeft === 0){
+    seconds--;
+    timeEl.textContent = seconds;
+    if (seconds === 0){
       clearInterval(countDown);
-    } },1000);
+      // store score and go to end screen
+//      localStorage.set("highscore", );
+      endTheGame(true);
+    }
+  },1000);
 }
 
 
-
-function endTheGame() {
+function shutDown() {
+    for (let i=0; i<buttonEls.length - 1; i++) {
+      if (i !== 1){
+	buttonEls[i].setAttribute("style", "visibility: hidden;");
+	timerEl.setAttribute("style", "visibility: hidden;");
+      } else {
+	let blackLink = document.createElement("a")
+	blackLink.textContent = "Fine, I quit.";
+	blackLink.setAttribute("href", "./blackOut.html");
+	buttonEls[i].textContent = "";
+	buttonEls[i].setAttribute("style", "background-color: black;");
+	buttonEls[i].appendChild(blackLink);
+      }
+    }
 }
 
+function endTheGame(wasPlayed) {
+  if (!wasPlayed) {
+    // end gamee when there was no played game
+    questionEl.textContent = "You didn't want to play our game?";
+    for (let i=1; i<buttonEls.length - 1; i++) {
+      buttonEls[i].setAttribute("style", "visibility:visible;");
+      if (i === 1) {
+	buttonEls[i].textContent = "Shut me down?";
+	buttonEls[i].addEventListener("click", () => {shutDown();});
+      }else if (i === 2) {
+	buttonEls[i].textContent = "No, I actually want to play.";
+	buttonEls[i].addEventListener("click", () => {startTheGame();});
+      } else {
+	buttonEls[i].textContent = "Wait, where are you going?";
+	buttonEls[i].addEventListener("click", () => {startTheGame();});
+      }
+    }
+  } else {
+    // end game when  agame was played
+    // button1: want to play again?
+    // button2: Enter highscore?
+    // button3: Quit.....Now
+    questionEl.textContent = "Great job!";
+    for (let i=1; i<buttonEls.length; i++) {
+      buttonEls[i].setAttribute("style", "visibility:visible;");
+      switch (i) {
+      case 1:
+	buttonEls[i].textContent = "Want to play again?";
+	buttonEls[i].addEventListener("click", () => {startTheGame();});
+	break;
+      case 2:
+	buttonEls[i].textContent = "Enter your highscore?";
+	buttonEls[i].addEventListener("click", () => {highScores( );});
+	break;
+      case 3:
+	buttonEls[i].textContent = "Wait, where are you going?";
+	buttonEls[i].addEventListener("click", () => {shutDown;});
+      case 4:
+	buttonEls[i].setAttribute("style", "visibility: hidden;");
+      }
+    }
 
-let answersList = document.createElement("ul");
-let answerEl1 = document.createElement("li");
-let answerEl2 = document.createElement("li");
-let answerEl3 = document.createElement("li");
-let answerEl4 = document.createElement("li");
-let buttonEl1 = document.createElement("button");
-let buttonEl2 = document.createElement("button");
-let buttonEl3 = document.createElement("button");
-let buttonEl4 = document.createElement("button");
-
-//let answers = [answerEl1,answerEl2,answerEl3,answerEl4,];
-//let buttons = [buttonEl1,buttonEl2,buttonEl3,buttonEl4,];
-
-
-function tearDownStart() {
-  answerEl1.removeChild(buttonEl1);
-  answerEl2.removeChild(buttonEl2);
-  answersList.removeChild(answerEl1);
-  answersList.removeChild(answerEl2);
-}
-
-function buildStartScreen() {
-
-
-  answersEl.appendChild(answersList);
-  buttonEl1.textContent = "1. Yes I do.";
-  answerEl1.appendChild(buttonEl1);
-  buttonEl1.setAttribute("class","yes");
-  buttonEl1.setAttribute("style","visibility: visible;");
-  answersList.appendChild(answerEl1);
-  buttonEl1.addEventListener("click", startTheGame);
-  buttonEl2.textContent = "2. No, don't bother me.";
-  answerEl2.appendChild(buttonEl2);
-  buttonEl1.setAttribute("class","no");
-  buttonEl2.setAttribute("style","visibility: visible;");
-  answersList.appendChild(answerEl2);
-  buttonEl2.addEventListener("click", endTheGame);
-  answersEl.appendChild(answersList);
-  answersEl.setAttribute("style","display: flex; flex-direction: column;\
-                          justify-content: center; font-size: 3rem;");
-}
+  }
   
+}
+
 function startScreen() {
-  questionEl.textContent = "Do you want to play a game?";
-  questionEl.setAttribute("style","font-size: 4rem;")
-  buildStartScreen() 
-}
-
-function startTheGame(QnAs) {
-  tearDownStart()
-  highscoresEl.setAttribute("visibility", "visible");
-  timerEl.setAttribute("visibility", "visible");
-  console.log(QnAs["questions"]);
-  questionEl.textContent = QnAs;
+  buttonEls[1].addEventListener("click", () => {startTheGame(QnAs);});
+  buttonEls[2].addEventListener("click", () => {endTheGame(false);});
   
 }
 
+function checkAnswer(guess,qID) {
+  pick = (guess === qID) ? true : false;
+  console.log("Pick is: " + pick);
+  return;
+}
+  
+function buildQandA (questionID) {
+  let Question = QnAs["questions"][questionID];
+  questionEl.textContent = Question["question"];
+  for (let j=1; j<buttonEls.length; j++) {
+    let Answers = Question["Answers"];
+    buttonEls[j].setAttribute("style", "visibility: visible;");
+    buttonEls[j].textContent = Answers[j-1];
+    buttonEls[j].addEventListener("click", checkAnswer(Answers[j-1].charAt(0),
+						       Question["Answer"]));
+  }
+  return;
+}
+
+
+function playTheGame(QnAs) {
+  for (let i=1; i<buttonEls.length - 1; i++) {
+    buttonEls[i].setAttribute("style", "visibility: visible;");
+  }
+  for(let i=0; i<QnAs["questions"].length - 1; i++) {
+    buildQandA(i);
+    
+  }
+}
+
+function startTheGame() {
+  timerEl.setAttribute("style", "visibility: visible;");
+  highscoresEl.setAttribute("style", "visibility: visible;");
+  highscoreEl.setAttribute("style", "visibility: visible;");
+  timer(secondsLeft);
+  playTheGame(QnAs);
+}
 
 startScreen();
 
