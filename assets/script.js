@@ -30,7 +30,7 @@ let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
 let highScoresEl = document.querySelector("#highScores button");
 let highScoreEl = document.querySelector("#highScore");
-const secondsLeft = 90;
+const secondsLeft = 5; //90;
 let highScore = 0;
 let isCorrect = false;
 let [pick,guess] = ["",""];
@@ -66,12 +66,15 @@ function startScreen() {
   buttonEls[2].addEventListener("click", end);
   return 0;
 }
-
 function checkAnswer(guess,qID) {
-  isCorrect = (guess === qID) ? true : false;
-  console.log("Pick is: " + isCorrect);
-  return isCorrect;
+  console.log("Pick is: " + (guess === qID));
+  if (guess === qID){
+    score += 10;
+    return true;
+  }
+  return false;
 }
+
 let getPick = function pick(event) {
   pick = event.currentTarget.textContent.charAt(0);
   console.log(pick);
@@ -80,7 +83,7 @@ let getPick = function pick(event) {
 
 function showResult(result) {  
   // show if it was correct/wrong
-  resultEl.textContent = result? "Correct" : "Wrong";
+  resultEl.textContent = result ? "Correct" : "Wrong";
   // add solid overline to display
   resultEl.setAttribute("style", "text-decoration: overline;");
   resultEl.setAttribute("style", "text-decoration-style: solid;");
@@ -112,8 +115,8 @@ function playTheGame(QnAs) {
     // check the guess and show resutls
     showResult(checkAnswer(pick, i));
   }
+  endTheGame(true);
 }
-
 
 function startTheGame() {  
   // remove the two functions added in the start screen
@@ -179,7 +182,7 @@ function highScorePage() {
   // update text and add text box and comment
   questionEl.textContent = "Enter your score below";
   document.querySelector("#highScoreInput").setAttribute("style","visibility:visible");
-  let ulEl = documentSelector("ul");
+  let ulEl = document.querySelector("ul");
   ul.setAttribute("style",
 		  "display: flex; flex-direction: row;");
 }
@@ -211,10 +214,10 @@ function endTheGame(wasPlayed) {
       case 2:
 	buttonEls[i].textContent = "Enter your highScore?";
 	buttonEls[i].removeEventListener("click", getPick);
-	buttonEls[i].addEventListener("click", enterHighScore);
+	buttonEls[i].addEventListener("click", highScorePage);
 	break;
       case 3:
-	buttonEls[i].textContent = "Wait, where are you going?";
+	buttonEls[i].textContent = "Wait, leaving alreadyx?";
 	buttonEls[i].removeEventListener("click", getPick);
 	buttonEls[i].addEventListener("click", shutItDown);
       case 4:
