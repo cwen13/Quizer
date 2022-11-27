@@ -44,7 +44,77 @@ function timer (seconds) {
   },1000);
 }
 
+/*------------------------------------------------
+ *Game play track
+ *------------------------------------------------*/
+let start = function startGame(event){
+  startTheGame(QnAs);
+  return;
+}
+let end = function endGame(event){
+  endTheGame(false);
+  return;
+}
 
+function startScreen() {
+  buttonEls[1].addEventListener("click", start);
+  buttonEls[2].addEventListener("click", end);
+  return;
+}
+
+function checkAnswer(guess,qID) {
+  isCorrect = (guess === qID) ? true : false;
+  console.log("Pick is: " + isCorrect);
+  return;
+}
+
+let getPick = function pick(event) {
+  return event.currentTarget.textContent.charAt(0);
+}
+
+function buildQandA (questionID, setUp) {
+  if (setUp) {
+    for (let i=1; i<buttonEls.length; i++) {
+      buttonEls[i].addEventListener("click", getPick);
+    }
+  }
+  let Question = QnAs["questions"][questionID];
+  questionEl.textContent = Question["question"];
+  for (let j=1; j<buttonEls.length; j++) {
+    let Answers = Question["Answers"];
+    buttonEls[j].textContent = Answers[j-1];
+  }
+  return guess;
+}
+
+function playTheGame(QnAs) {
+  for (let i=0; i<QnAs["questions"].length; i++) {
+    // if firt time going to quesiton inser event listener
+    if (i===0) {
+      checkAnswer(buildQandA(i, true), QnAs["questions"][i]["Answer"]);
+    } else {
+      checkAnswer(buildQandA(i, false), QnAs["questions"][i]["Answer"]);
+    }
+  }
+}
+
+function startTheGame() {  
+  // remove the two functions added in the start screen
+  buttonEls[1].removeEventListener("click", start);
+  buttonEls[2].removeEventListener("click", end);
+
+  // unhide timer, highscore button and score
+  timerEl.setAttribute("style", "visibility: visible;");
+  highscoresEl.setAttribute("style", "visibility: visible;");
+  highscoreEl.setAttribute("style", "visibility: visible;");
+  timer(secondsLeft);
+  playTheGame(QnAs);
+}
+
+
+/*------------------------------------------------
+ *End Game track
+ *------------------------------------------------*/
 function shutDown() {
     for (let i=0; i<buttonEls.length - 1; i++) {
       if (i !== 1){
@@ -111,63 +181,7 @@ function endTheGame(wasPlayed) {
   
 }
 
-function start(){
-  startTheGame(QnAs);
-  return;
-}
-function end(){
-  endTheGame(false);
-  return;
-}
-function startScreen() {
-  buttonEls[1].addEventListener("click", start);
-  buttonEls[2].addEventListener("click", end);
-  return;
-}
 
-function checkAnswer(guess,qID) {
-  isCorrect = (guess === qID) ? true : false;
-  console.log("Pick is: " + isCorrect);
-  return;
-}
-  
-function buildQandA (questionID) {
-  let Question = QnAs["questions"][questionID];
-  questionEl.textContent = Question["question"];
-  for (let j=1; j<buttonEls.length; j++) {
-    let Answers = Question["Answers"];
-    buttonEls[j].textContent = Answers[j-1];
-  }
-  return guess;
-}
-
-
-function playTheGame(QnAs) {
-  for (let i=1; i<buttonEls.length; i++) {
-    buttonEls[i].setAttribute("style", "visibility: visible;");
-    buttonEls[i].addEventListener("click", () => {
-      guess = (buttonEls[i].textContent).charAt(0);
-      console.log(guess);
-    });
-
-  }
-  for(let i=0; i<QnAs["questions"].length; i++) {
-    checkAnswer(buildQandA(i), QnAs["questions"][i]["Answer"]);
-  }
-}
-
-function startTheGame() {  
-  // remove the two functions added in teh start screen
-  buttonEls[1].removeEventListener("click", start);
-  buttonEls[2].removeEventListener("click", end);
-
-  // unhide timer, highscore button and score
-  timerEl.setAttribute("style", "visibility: visible;");
-  highscoresEl.setAttribute("style", "visibility: visible;");
-  highscoreEl.setAttribute("style", "visibility: visible;");
-  timer(secondsLeft);
-  playTheGame(QnAs);
-}
 
 startScreen();
 
