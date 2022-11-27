@@ -161,7 +161,9 @@ let enterHighScore = function(event){
    * check it against any other scores
    * update table
    */
-  
+  if (score > highScore) {
+  } else {
+  }
   return;
 }
 function highScorePage() {
