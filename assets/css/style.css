@@ -48,6 +48,10 @@ a {
   visibility: hidden;
 }
 
+#highScoreInput {
+  visibility: hidden;
+}
+
 #answers ol ~ li {
   font-size: 2rem;
 }

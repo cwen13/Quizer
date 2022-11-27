@@ -73,7 +73,7 @@ function checkAnswer(guess,qID) {
   return;
 }
 let getPick = function pick(event) {
-//  console.log(event.currentTarget.textContent.charAt(0));
+  console.log(event.currentTarget.textContent.charAt(0));
   return event.currentTarget.textContent.charAt(0);
 }
 function buildQandA (questionID, setUp) {
@@ -141,32 +141,37 @@ function shutDown() {
 }
 
 let enterHighScore = function(event){
-  highScorePage();
+  // place score from the input box in the highscore list
   return;
 }
-
 function highScorePage() {
-  questionEl.textContent = "Enter your score below";
-  // clear button visibility ad functions
+  // clear button visibility and functions
   for (let i=1; i<buttonEls.length; i++) {
-    buttonEls[i].setAttribute("style", "visibility: hidden;");
+    if (i!==1) {
+      buttonEls[i].setAttribute("style", "visibility: hidden;");
+    }
     switch (i) {
     case 1:
-      buttonEls[i].removeEventListener("click", );
+      buttonEls[i].removeEventListener("click", getPick);
+      buttonEls[i].addEventListener("click", enterHighScore);
       break;
     case 2:
-      buttonEls[i].removeEventListener("click", );
+      buttonEls[i].removeEventListener("click", getPick);
       break;
     case 3:
-      buttonEls[i].removeEventListener("click", );
+      buttonEls[i].removeEventListener("click", getPick);
       break;
     case 4:
-      buttonEls[i].removeEventListener("click", );
+      buttonEls[i].removeEventListener("click", getPick);
       break;
     }
   }
-  
-  // create box
+  // update text and add text box and comment
+  questionEl.textContent = "Enter your score below";
+  document.querySelector("#highScoreInput").setAttribute("style","visibility:visible");
+  let ulEl = documentSelector("ul");
+  ul.setAttribute("style",
+		  "display: flex; flex-direction: row;");
 }
 
 function endTheGame(wasPlayed) {
@@ -207,9 +212,7 @@ function endTheGame(wasPlayed) {
 	buttonEls[i].removeEventListener("click", getPick);
       }
     }
-
-  }
-  
+  } 
 }
 
 startScreen();
