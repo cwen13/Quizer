@@ -30,8 +30,11 @@ let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
 let highScoresEl = document.querySelector("#highScores button");
 let highScoreEl = document.querySelector("#highScore");
+let intialsEl = document.querySelector("#highScoreInput");
 const secondsLeft = 5; //90;
 let highScore = 0;
+let score = 0;
+
 let isCorrect = false;
 let [pick,guess] = ["",""];
 
@@ -44,7 +47,6 @@ function timer (seconds) {
     if (seconds === 0){
       clearInterval(countDown);
       // store score and go to end screen
-//      localStorage.set("highScore", );
       endTheGame(true);
     }
   },1000);
@@ -154,37 +156,40 @@ function shutDown() {
 }
 
 let enterHighScore = function(event){
-  // place score from the input box in the highscore list
+  /* place score from the input box in the highscore list
+   * store score
+   * check it against any other scores
+   * update table
+   */
+  
   return;
 }
 function highScorePage() {
   // clear button visibility and functions
   for (let i=1; i<buttonEls.length; i++) {
-    if (i!==1) {
-      buttonEls[i].setAttribute("style", "visibility: hidden;");
-    }
     switch (i) {
     case 1:
+      buttonEls[i].textContent = "Enter high score!";
       buttonEls[i].removeEventListener("click", getPick);
       buttonEls[i].addEventListener("click", enterHighScore);
       break;
     case 2:
       buttonEls[i].removeEventListener("click", getPick);
+      
       break;
     case 3:
       buttonEls[i].removeEventListener("click", getPick);
+      buttonEls[i].setAttribute("style", "visibility: hidden;");
       break;
     case 4:
       buttonEls[i].removeEventListener("click", getPick);
+      buttonEls[i].setAttribute("style", "visibility: hidden;");
       break;
     }
   }
   // update text and add text box and comment
   questionEl.textContent = "Enter your score below";
-  document.querySelector("#highScoreInput").setAttribute("style","visibility:visible");
-  let ulEl = document.querySelector("ul");
-  ul.setAttribute("style",
-		  "display: flex; flex-direction: row;");
+  initialsEl.setAttribute("style","visibility:visible");
 }
 
 function endTheGame(wasPlayed) {
