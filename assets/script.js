@@ -9,10 +9,16 @@ const QnAs = {
 		 "D is devious"],
       "Answer": "A"},
     {"question": "String for the question1?",
-      "Answers": ["A","B","C","D"],
+     "Answers": ["A if you go",
+		 "B if you see",
+		 "C if you play",
+		 "D if your good"],
       "Answer": "B"},
     {"question": "String for this question3?",
-      "Answers": ["A","B","C","D"],
+     "Answers": ["A when its dark",
+		 "B when its storms",
+		 "C when the light is dim",
+		 "D when the strong walk no more"],
       "Answer": "C"}]}
 //-------------------------------------------->
 let timerEl = document.querySelector(".timer");
@@ -55,11 +61,10 @@ let end = function endGame(event){
   endTheGame(false);
   return;
 }
-
 function startScreen() {
   buttonEls[1].addEventListener("click", start);
   buttonEls[2].addEventListener("click", end);
-  return;
+  return 0;
 }
 
 function checkAnswer(guess,qID) {
@@ -67,24 +72,25 @@ function checkAnswer(guess,qID) {
   console.log("Pick is: " + isCorrect);
   return;
 }
-
 let getPick = function pick(event) {
+//  console.log(event.currentTarget.textContent.charAt(0));
   return event.currentTarget.textContent.charAt(0);
 }
-
 function buildQandA (questionID, setUp) {
-  if (setUp) {
-    for (let i=1; i<buttonEls.length; i++) {
-      buttonEls[i].addEventListener("click", getPick);
-    }
-  }
   let Question = QnAs["questions"][questionID];
   questionEl.textContent = Question["question"];
-  for (let j=1; j<buttonEls.length; j++) {
-    let Answers = Question["Answers"];
-    buttonEls[j].textContent = Answers[j-1];
+
+  for (let i=1; i<buttonEls.length; i++) {
+    if (setUp) {
+      buttonEls[i].setAttribute("style", "visibility: visible;");
+      buttonEls[i].addEventListener("click", getPick);
+    }
+    for (let j=1; j<buttonEls.length; j++) {
+      let Answers = Question["Answers"];
+      buttonEls[j].textContent = Answers[j-1];
+    }
   }
-  return guess;
+  return;
 }
 
 function playTheGame(QnAs) {
