@@ -70,46 +70,56 @@ function startScreen() {
 function checkAnswer(guess,qID) {
   isCorrect = (guess === qID) ? true : false;
   console.log("Pick is: " + isCorrect);
-  return;
+  return isCorrect;
 }
 let getPick = function pick(event) {
-  console.log(event.currentTarget.textContent.charAt(0));
+  pick = event.currentTarget.textContent.charAt(0);
+  console.log(pick);
   return event.currentTarget.textContent.charAt(0);
 }
-function buildQandA (questionID, setUp) {
-  let Question = QnAs["questions"][questionID];
-  questionEl.textContent = Question["question"];
 
-  for (let i=1; i<buttonEls.length; i++) {
-    if (setUp) {
-      buttonEls[i].setAttribute("style", "visibility: visible;");
-      buttonEls[i].addEventListener("click", getPick);
-    }
-    for (let j=1; j<buttonEls.length; j++) {
-      let Answers = Question["Answers"];
-      buttonEls[j].textContent = Answers[j-1];
-    }
-  }
+function showResult(result) {  
+  // show if it was correct/wrong
+  resultEl.textContent = result? "Correct" : "Wrong";
+  // add solid overline to display
+  resultEl.setAttribute("style", "text-decoration: overline;");
+  resultEl.setAttribute("style", "text-decoration-style: solid;");
+  resultEl.setAttribute("style", "text-decoration-thickness: 0.5rem;");
+  resultEl.setAttribute("style", "font-size: 2rem;");
+  resultEl.setAttribute("style", "align-content: start;");
   return;
 }
 
-function playTheGame(QnAs) {
+function playTheGame(QnAs) {  
   for (let i=0; i<QnAs["questions"].length; i++) {
-    // if firt time going to quesiton inser event listener
+    let Question = QnAs["questions"][i];
+    questionEl.textContent = Question["question"];
     if (i===0) {
-      checkAnswer(buildQandA(i, true), QnAs["questions"][i]["Answer"]);
-    } else {
-      checkAnswer(buildQandA(i, false), QnAs["questions"][i]["Answer"]);
+      for (let j=1; j<buttonEls.length; j++){
+	buttonEls[j].setAttribute("style", "visibility: visible;");
+	buttonEls[j].addEventListener("click", getPick);
+      }
     }
+    /* need to do the follwoing
+     * update question and populate buttons with answers
+     * check that answer
+     * show results in the bottom */
+    for (let j=1; j<buttonEls.length; j++) {
+      let Answers = Question["Answers"];
+      // populate answer buttons
+      buttonEls[j].textContent = Answers[j-1];
+    }
+    // check the guess and show resutls
+    showResult(checkAnswer(pick, i));
   }
 }
+
 
 function startTheGame() {  
   // remove the two functions added in the start screen
   buttonEls[1].removeEventListener("click", start);
   buttonEls[2].removeEventListener("click", end);
-
-  // unhide timer, highScore button and score
+  // unhide timer, highScore button and score(highScoreEl)
   timerEl.setAttribute("style", "visibility: visible;");
   highScoresEl.setAttribute("style", "visibility: visible;");
   highScoreEl.setAttribute("style", "visibility: visible;");
