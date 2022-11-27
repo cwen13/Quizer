@@ -3,7 +3,10 @@
 const QnAs = {
   "questions": [
     {"question": "String for a question0?",
-      "Answers": ["A","B","C","D"],
+     "Answers": ["A is a lonly number",
+		 "B is for button",
+		 "C is a coper",
+		 "D is devious"],
       "Answer": "A"},
     {"question": "String for the question1?",
       "Answers": ["A","B","C","D"],
@@ -23,7 +26,9 @@ let highscoresEl = document.querySelector("#highscores button");
 let highscoreEl = document.querySelector("#highscore");
 const secondsLeft = 90;
 let highscore = 0;
-let pick;
+let isCorrect = false;
+let [pick,guess] = ["",""];
+
 timeEl.textContent = secondsLeft
 
 function timer (seconds) {
@@ -70,7 +75,11 @@ function endTheGame(wasPlayed) {
 	buttonEls[i].addEventListener("click", () => {startTheGame();});
       } else {
 	buttonEls[i].textContent = "Wait, where are you going?";
-	buttonEls[i].addEventListener("click", () => {startTheGame();});
+	buttonEls[i].addEventListener("click", () => {
+	  questionEl.textContent = "I'll be gone.";
+	  timer(3);
+	  shutDown();
+	});
       }
     }
   } else {
@@ -102,15 +111,23 @@ function endTheGame(wasPlayed) {
   
 }
 
+function start(){
+  startTheGame(QnAs);
+  return;
+}
+function end(){
+  endTheGame(false);
+  return;
+}
 function startScreen() {
-  buttonEls[1].addEventListener("click", () => {startTheGame(QnAs);});
-  buttonEls[2].addEventListener("click", () => {endTheGame(false);});
-  
+  buttonEls[1].addEventListener("click", start);
+  buttonEls[2].addEventListener("click", end);
+  return;
 }
 
 function checkAnswer(guess,qID) {
-  pick = (guess === qID) ? true : false;
-  console.log("Pick is: " + pick);
+  isCorrect = (guess === qID) ? true : false;
+  console.log("Pick is: " + isCorrect);
   return;
 }
   
@@ -119,26 +136,32 @@ function buildQandA (questionID) {
   questionEl.textContent = Question["question"];
   for (let j=1; j<buttonEls.length; j++) {
     let Answers = Question["Answers"];
-    buttonEls[j].setAttribute("style", "visibility: visible;");
     buttonEls[j].textContent = Answers[j-1];
-    buttonEls[j].addEventListener("click", checkAnswer(Answers[j-1].charAt(0),
-						       Question["Answer"]));
   }
-  return;
+  return guess;
 }
 
 
 function playTheGame(QnAs) {
-  for (let i=1; i<buttonEls.length - 1; i++) {
+  for (let i=1; i<buttonEls.length; i++) {
     buttonEls[i].setAttribute("style", "visibility: visible;");
+    buttonEls[i].addEventListener("click", () => {
+      guess = (buttonEls[i].textContent).charAt(0);
+      console.log(guess);
+    });
+
   }
-  for(let i=0; i<QnAs["questions"].length - 1; i++) {
-    buildQandA(i);
-    
+  for(let i=0; i<QnAs["questions"].length; i++) {
+    checkAnswer(buildQandA(i), QnAs["questions"][i]["Answer"]);
   }
 }
 
-function startTheGame() {
+function startTheGame() {  
+  // remove the two functions added in teh start screen
+  buttonEls[1].removeEventListener("click", start);
+  buttonEls[2].removeEventListener("click", end);
+
+  // unhide timer, highscore button and score
   timerEl.setAttribute("style", "visibility: visible;");
   highscoresEl.setAttribute("style", "visibility: visible;");
   highscoreEl.setAttribute("style", "visibility: visible;");
