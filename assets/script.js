@@ -28,10 +28,10 @@ let resultEl = document.querySelector("#result");
 let answersEls = document.querySelectorAll("li");
 let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
-let highscoresEl = document.querySelector("#highscores button");
-let highscoreEl = document.querySelector("#highscore");
+let highScoresEl = document.querySelector("#highScores button");
+let highScoreEl = document.querySelector("#highScore");
 const secondsLeft = 90;
-let highscore = 0;
+let highScore = 0;
 let isCorrect = false;
 let [pick,guess] = ["",""];
 
@@ -44,7 +44,7 @@ function timer (seconds) {
     if (seconds === 0){
       clearInterval(countDown);
       // store score and go to end screen
-//      localStorage.set("highscore", );
+//      localStorage.set("highScore", );
       endTheGame(true);
     }
   },1000);
@@ -109,10 +109,10 @@ function startTheGame() {
   buttonEls[1].removeEventListener("click", start);
   buttonEls[2].removeEventListener("click", end);
 
-  // unhide timer, highscore button and score
+  // unhide timer, highScore button and score
   timerEl.setAttribute("style", "visibility: visible;");
-  highscoresEl.setAttribute("style", "visibility: visible;");
-  highscoreEl.setAttribute("style", "visibility: visible;");
+  highScoresEl.setAttribute("style", "visibility: visible;");
+  highScoreEl.setAttribute("style", "visibility: visible;");
   timer(secondsLeft);
   playTheGame(QnAs);
 }
@@ -121,6 +121,9 @@ function startTheGame() {
 /*------------------------------------------------
  *End Game track
  *------------------------------------------------*/
+let shutItDown = function (event) {
+  shutDown();
+}
 function shutDown() {
     for (let i=0; i<buttonEls.length - 1; i++) {
       if (i !== 1){
@@ -128,7 +131,7 @@ function shutDown() {
 	timerEl.setAttribute("style", "visibility: hidden;");
       } else {
 	let blackLink = document.createElement("a")
-	blackLink.textContent = "Fine, I quit.";
+	blackLink.textContent = "Fine, see you later.";
 	blackLink.setAttribute("href", "./blackOut.html");
 	buttonEls[i].textContent = "";
 	buttonEls[i].setAttribute("style", "background-color: black;");
@@ -137,57 +140,77 @@ function shutDown() {
     }
 }
 
+let enterHighScore = function(event){
+  highScorePage();
+  return;
+}
+
+function highScorePage() {
+  questionEl.textContent = "Enter your score below";
+  // clear button visibility ad functions
+  for (let i=1; i<buttonEls.length; i++) {
+    buttonEls[i].setAttribute("style", "visibility: hidden;");
+    switch (i) {
+    case 1:
+      buttonEls[i].removeEventListener("click", );
+      break;
+    case 2:
+      buttonEls[i].removeEventListener("click", );
+      break;
+    case 3:
+      buttonEls[i].removeEventListener("click", );
+      break;
+    case 4:
+      buttonEls[i].removeEventListener("click", );
+      break;
+    }
+  }
+  
+  // create box
+}
+
 function endTheGame(wasPlayed) {
   if (!wasPlayed) {
-    // end gamee when there was no played game
     questionEl.textContent = "You didn't want to play our game?";
-    for (let i=1; i<buttonEls.length - 1; i++) {
-      buttonEls[i].setAttribute("style", "visibility:visible;");
-      if (i === 1) {
-	buttonEls[i].textContent = "Shut me down?";
-	buttonEls[i].addEventListener("click", () => {shutDown();});
-      }else if (i === 2) {
-	buttonEls[i].textContent = "No, I actually want to play.";
-	buttonEls[i].addEventListener("click", () => {startTheGame();});
-      } else {
-	buttonEls[i].textContent = "Wait, where are you going?";
-	buttonEls[i].addEventListener("click", () => {
-	  questionEl.textContent = "I'll be gone.";
-	  timer(3);
-	  shutDown();
-	});
-      }
-    }
+    // end gamee when there was none played game
+    // keep button1's listener but change text
+    buttonEls[1].textContent = "No, I actually want to play.";
+    // relink up button2 and text
+    buttonEls[2].textContent = "Shut me down?";
+    buttonEls[2].removeEventListener("click", end);
+    buttonEls[2].addEventListener("click", shutItDown);    
   } else {
-    // end game when  agame was played
+    // end game when a game was played
     // button1: want to play again?
-    // button2: Enter highscore?
+    // button2: Enter highScore?
     // button3: Quit.....Now
     questionEl.textContent = "Great job!";
     for (let i=1; i<buttonEls.length; i++) {
-      buttonEls[i].setAttribute("style", "visibility:visible;");
+      buttonEls[i].setAttribute("style", "visibility: visible;");
       switch (i) {
       case 1:
 	buttonEls[i].textContent = "Want to play again?";
-	buttonEls[i].addEventListener("click", () => {startTheGame();});
+	buttonEls[i].removeEventListener("click", getPick);
+	buttonEls[i].addEventListener("click", start);
 	break;
       case 2:
-	buttonEls[i].textContent = "Enter your highscore?";
-	buttonEls[i].addEventListener("click", () => {highScores( );});
+	buttonEls[i].textContent = "Enter your highScore?";
+	buttonEls[i].removeEventListener("click", getPick);
+	buttonEls[i].addEventListener("click", enterHighScore);
 	break;
       case 3:
 	buttonEls[i].textContent = "Wait, where are you going?";
-	buttonEls[i].addEventListener("click", () => {shutDown;});
+	buttonEls[i].removeEventListener("click", getPick);
+	buttonEls[i].addEventListener("click", shutItDown);
       case 4:
 	buttonEls[i].setAttribute("style", "visibility: hidden;");
+	buttonEls[i].removeEventListener("click", getPick);
       }
     }
 
   }
   
 }
-
-
 
 startScreen();
 
