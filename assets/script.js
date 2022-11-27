@@ -30,7 +30,7 @@ let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
 let highScoresEl = document.querySelector("#highScores button");
 let highScoreEl = document.querySelector("#highScore");
-let intialsEl = document.querySelector("#highScoreInput");
+let initialsEl = document.querySelector("#highScoreInput");
 const secondsLeft = 5; //90;
 let highScore = 0;
 let score = 0;
@@ -84,21 +84,19 @@ let getPick = function pick(event) {
 }
 
 function showResult(result) {  
-  // show if it was correct/wrong
+  // show if choice is correct/wrong
   resultEl.textContent = result ? "Correct" : "Wrong";
   // add solid overline to display
-  resultEl.setAttribute("style", "text-decoration: overline;");
-  resultEl.setAttribute("style", "text-decoration-style: solid;");
-  resultEl.setAttribute("style", "text-decoration-thickness: 0.5rem;");
-  resultEl.setAttribute("style", "font-size: 2rem;");
-  resultEl.setAttribute("style", "align-content: start;");
+  resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%;");
   return;
 }
 
-function playTheGame(QnAs) {  
+function playTheGame(QnAs) {
+  // for each question populate the buttons with the posisble answers
   for (let i=0; i<QnAs["questions"].length; i++) {
     let Question = QnAs["questions"][i];
     questionEl.textContent = Question["question"];
+    // on first population make all buttons visable and have funciton tied to them
     if (i===0) {
       for (let j=1; j<buttonEls.length; j++){
 	buttonEls[j].setAttribute("style", "visibility: visible;");
@@ -118,6 +116,7 @@ function playTheGame(QnAs) {
     showResult(checkAnswer(pick, i));
   }
   endTheGame(true);
+  return;
 }
 
 function startTheGame() {  
@@ -161,7 +160,9 @@ let enterHighScore = function(event){
    * check it against any other scores
    * update table
    */
-  
+  if (score > highScore) {
+  } else {
+  }
   return;
 }
 function highScorePage() {
@@ -189,7 +190,7 @@ function highScorePage() {
   }
   // update text and add text box and comment
   questionEl.textContent = "Enter your score below";
-  initialsEl.setAttribute("style","visibility:visible");
+  initialsEl.setAttribute("style","visibility: visible;");
 }
 
 function endTheGame(wasPlayed) {
