@@ -172,6 +172,7 @@ function highScorePage() {
     switch (i) {
     case 1:
       buttonEls[i].textContent = "Submit";
+      buttonEls[i].setAttribute("style", "");
       buttonEls[i].removeEventListener("click", getPick);
       buttonEls[i].addEventListener("click", enterHighScore);
       break;
