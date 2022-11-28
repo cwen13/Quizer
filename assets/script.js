@@ -92,32 +92,40 @@ function showResult(result) {
 }
 
 function playTheGame(QnAs) {
-  // set the base setting or buttons
-  for (let j=1; j<buttonEls.length; j++){
-    buttonEls[j].setAttribute("style", "visibility: visible;");
-    buttonEls[j].addEventListener("click", getPick);
+  function setUp () {
+    // set the base setting or buttons
+    for (let j=1; j<buttonEls.length; j++){
+      buttonEls[j].setAttribute("style", "visibility: visible;");
+      buttonEls[j].addEventListener("click", getPick);
+    }
+    return;
+  }
+  function populateQnAs (question) {
+    // populate question and posisble answers
+    questionEl.textContent = question["question"];
+    let Answers = question["Answers"];
+    for (let i=0; i<Answers.length; i++) {
+      buttonEls[i].textContent = Answers[i];
+    }
+  }
+  function tearDown () {
+    // set the base setting or buttons
+    for (let j=1; j<buttonEls.length; j++){
+      buttonEls[j].setAttribute("style", "visibility: hidden;");
+      buttonEls[j].removeEventListener("click", getPick);
+    }
+    return;
   }
   
-  // for each question populate the buttons with the posisble answers
+  setUp();
   for (let i=0; i<QnAs["questions"].length; i++) {
-    let Question = QnAs["questions"][i];
-    questionEl.textContent = Question["question"];
-    // on first population make all buttons visable and have funciton tied to them
-    if (i===0) {
-      } else {
-      /* need to do the follwoing
-       * update question and populate buttons with answers
-       * check that answer
-       * show results in the bottom */
-      for (let j=1; j<buttonEls.length; j++) {
-	let Answers = Question["Answers"];
-	// populate answer buttons
-	buttonEls[j].textContent = Answers[j-1];
-      }
-    }
-    // check the guess and show resutls
-    showResult(checkAnswer(pick, i));
+    populateQnAs(QnAs["questions"][i]);
+    console.log("Pick - " + pick);
+    guess = checkAnswer(pick,QnAs["questions"][i]["Answer"] );
+    showResult(guess);
+    console.log(QnAs["questions"][i]);
   }
+  tearDown()
   endTheGame(true);
   return;
 }
