@@ -30,7 +30,7 @@ let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
 let highScoresEl = document.querySelector("#highScores button");
 let highScoreEl = document.querySelector("#highScore");
-let intialsEl = document.querySelector("#highScoreInput");
+let initialsEl = document.querySelector("#highScoreInput");
 const secondsLeft = 5; //90;
 let highScore = 0;
 let score = 0;
@@ -84,52 +84,42 @@ let getPick = function pick(event) {
 }
 
 function showResult(result) {  
-  // show if it was correct/wrong
+  // show if choice is correct/wrong
   resultEl.textContent = result ? "Correct" : "Wrong";
   // add solid overline to display
-  resultEl.setAttribute("style", "text-decoration: overline;");
-  resultEl.setAttribute("style", "text-decoration-style: solid;");
-  resultEl.setAttribute("style", "text-decoration-thickness: 0.5rem;");
-  resultEl.setAttribute("style", "font-size: 2rem;");
-  resultEl.setAttribute("style", "align-content: start;");
+  resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%; font-size: 2rem;");
   return;
 }
 
-function playTheGame(QnAs) {  
+function playTheGame(QnAs) {
+  // set the base setting or buttons
+  for (let j=1; j<buttonEls.length; j++){
+    buttonEls[j].setAttribute("style", "visibility: visible;");
+    buttonEls[j].addEventListener("click", getPick);
+  }
+  
+  // for each question populate the buttons with the posisble answers
   for (let i=0; i<QnAs["questions"].length; i++) {
     let Question = QnAs["questions"][i];
     questionEl.textContent = Question["question"];
+    // on first population make all buttons visable and have funciton tied to them
     if (i===0) {
-      for (let j=1; j<buttonEls.length; j++){
-	buttonEls[j].setAttribute("style", "visibility: visible;");
-	buttonEls[j].addEventListener("click", getPick);
+      } else {
+      /* need to do the follwoing
+       * update question and populate buttons with answers
+       * check that answer
+       * show results in the bottom */
+      for (let j=1; j<buttonEls.length; j++) {
+	let Answers = Question["Answers"];
+	// populate answer buttons
+	buttonEls[j].textContent = Answers[j-1];
       }
-    }
-    /* need to do the follwoing
-     * update question and populate buttons with answers
-     * check that answer
-     * show results in the bottom */
-    for (let j=1; j<buttonEls.length; j++) {
-      let Answers = Question["Answers"];
-      // populate answer buttons
-      buttonEls[j].textContent = Answers[j-1];
     }
     // check the guess and show resutls
     showResult(checkAnswer(pick, i));
   }
   endTheGame(true);
-}
-
-function startTheGame() {  
-  // remove the two functions added in the start screen
-  buttonEls[1].removeEventListener("click", start);
-  buttonEls[2].removeEventListener("click", end);
-  // unhide timer, highScore button and score(highScoreEl)
-  timerEl.setAttribute("style", "visibility: visible;");
-  highScoresEl.setAttribute("style", "visibility: visible;");
-  highScoreEl.setAttribute("style", "visibility: visible;");
-  timer(secondsLeft);
-  playTheGame(QnAs);
+  return;
 }
 
 
@@ -155,27 +145,40 @@ function shutDown() {
     }
 }
 
+function showHighscores () {
+  // make a textbox with initals and scores
+  
+}
 let enterHighScore = function(event){
   /* place score from the input box in the highscore list
    * store score
    * check it against any other scores
    * update table
    */
-  
+  initialsEl.setAttribute("style","visibility: hidden;");
+  if (score > highScore) {
+    
+  } else {
+  }
   return;
 }
+  
 function highScorePage() {
+  // update text and add text box and comment
+  questionEl.textContent = "Enter your intials";
+  initialsEl.setAttribute("style","visibility: visible;");
   // clear button visibility and functions
   for (let i=1; i<buttonEls.length; i++) {
     switch (i) {
     case 1:
-      buttonEls[i].textContent = "Enter high score!";
+      buttonEls[i].textContent = "Submit";
+      buttonEls[i].setAttribute("style", "");
       buttonEls[i].removeEventListener("click", getPick);
       buttonEls[i].addEventListener("click", enterHighScore);
       break;
     case 2:
       buttonEls[i].removeEventListener("click", getPick);
-      
+      buttonEls[i].setAttribute("style", "visibility: hidden;");
       break;
     case 3:
       buttonEls[i].removeEventListener("click", getPick);
@@ -187,12 +190,11 @@ function highScorePage() {
       break;
     }
   }
-  // update text and add text box and comment
-  questionEl.textContent = "Enter your score below";
-  initialsEl.setAttribute("style","visibility:visible");
 }
 
 function endTheGame(wasPlayed) {
+  // get timer to zero out
+  
   if (!wasPlayed) {
     questionEl.textContent = "You didn't want to play our game?";
     // end gamee when there was none played game
@@ -233,5 +235,18 @@ function endTheGame(wasPlayed) {
   } 
 }
 
+function startTheGame() {  
+  // remove the two functions added in the start screen
+  buttonEls[1].removeEventListener("click", start);
+  buttonEls[2].removeEventListener("click", end);
+  // unhide timer, highScore button and score(highScoreEl)
+  timerEl.setAttribute("style", "visibility: visible;");
+  highScoresEl.setAttribute("style", "visibility: visible;");
+  highScoreEl.setAttribute("style", "visibility: visible;");
+  timer(secondsLeft);
+  playTheGame(QnAs);
+}
+
+  
 startScreen();
 
