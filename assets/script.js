@@ -92,13 +92,17 @@ function showResult(result) {
 }
 
 function playTheGame(QnAs) {
-  function setUp () {
+  function setUpTearDown (start) {
     // set the base setting or buttons
     for (let j=1; j<buttonEls.length; j++){
-      buttonEls[j].setAttribute("style", "visibility: visible;");
-      buttonEls[j].addEventListener("click", getPick);
+      if (start) {
+	buttonEls[j].setAttribute("style", "visibility: visible;");
+	buttonEls[j].addEventListener("click", getPick);
+      } else {
+	buttonEls[j].setAttribute("style", "visibility: hidden;");
+	buttonEls[j].removeEventListener("click", getPick);
+      }
     }
-    return;
   }
   function populateQnAs (question) {
     // populate question and posisble answers
@@ -108,16 +112,8 @@ function playTheGame(QnAs) {
       buttonEls[i].textContent = Answers[i];
     }
   }
-  function tearDown () {
-    // set the base setting or buttons
-    for (let j=1; j<buttonEls.length; j++){
-      buttonEls[j].setAttribute("style", "visibility: hidden;");
-      buttonEls[j].removeEventListener("click", getPick);
-    }
-    return;
-  }
   
-  setUp();
+  setUpTearDown(true);
   for (let i=0; i<QnAs["questions"].length; i++) {
     populateQnAs(QnAs["questions"][i]);
     console.log("Pick - " + pick);
@@ -125,7 +121,7 @@ function playTheGame(QnAs) {
     showResult(guess);
     console.log(QnAs["questions"][i]);
   }
-  tearDown()
+  setUpTearDown();
   endTheGame(true);
   return;
 }
