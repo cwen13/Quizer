@@ -1,9 +1,27 @@
+/*
+  Functions
+  + in timer
+   - start timer
+   - stop timer
+   - reduce time on wrong answer
+  + init to build home page
+  + render question+
+   - build question text/buttons
+  + check answer
+   - if correct give points and render next question
+   - if wrong reduce time/maybe lose points render next question
+  + check if done
+   - if not go to next question
+   - if done render highscore form
+  
+*/
+
 // JS file for questions and answers
 //--------JSON-Questions-&-Answers------------>
 const QnAs = {
   "questions": [
     {"question": "String for a question0?",
-     "Answers": ["A is a lonly number",
+     "Answers": ["A is a lonely number",
 		 "B is for button",
 		 "C is a coper",
 		 "D is devious"],
@@ -28,16 +46,17 @@ let resultEl = document.querySelector("#result");
 let answersEls = document.querySelectorAll("li");
 let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
-let highScoresEl = document.querySelector("#highScores button");
+let highScoresEl = document.querySelector("#highScores");
 let highScoreEl = document.querySelector("#highScore");
 let initialsEl = document.querySelector("#highScoreInput");
-const secondsLeft = 5; //90;
+const secondsLeft = 10; //90;
 let highScore = 0;
 let score = 0;
 
 let isCorrect = false;
-let [pick,guess] = ["",""];
-
+let guess = "";
+let selection = "";
+let Q = {};
 timeEl.textContent = secondsLeft
 
 function timer (seconds) {
@@ -78,9 +97,8 @@ function checkAnswer(guess,qID) {
 }
 
 let getPick = function pick(event) {
-  pick = event.currentTarget.textContent.charAt(0);
-  console.log(pick);
-  return event.currentTarget.textContent.charAt(0);
+selection = event.currentTarget.textContent.charAt(0);
+ return event.currentTarget.textContent.charAt(0);
 }
 
 function showResult(result) {  
@@ -92,35 +110,74 @@ function showResult(result) {
 }
 
 function playTheGame(QnAs) {
-  // set the base setting or buttons
-  for (let j=1; j<buttonEls.length; j++){
-    buttonEls[j].setAttribute("style", "visibility: visible;");
-    buttonEls[j].addEventListener("click", getPick);
-  }
-  
-  // for each question populate the buttons with the posisble answers
-  for (let i=0; i<QnAs["questions"].length; i++) {
-    let Question = QnAs["questions"][i];
-    questionEl.textContent = Question["question"];
-    // on first population make all buttons visable and have funciton tied to them
-    if (i===0) {
+  function setUpTearDown (start) {
+    // set the base setting or buttons
+    for (let j=1; j<buttonEls.length; j++){
+      if (start) {
+	buttonEls[j].setAttribute("style", "visibility: visible;");
+	buttonEls[j].addEventListener("click", getPick);
       } else {
-      /* need to do the follwoing
-       * update question and populate buttons with answers
-       * check that answer
-       * show results in the bottom */
-      for (let j=1; j<buttonEls.length; j++) {
-	let Answers = Question["Answers"];
-	// populate answer buttons
-	buttonEls[j].textContent = Answers[j-1];
+	buttonEls[j].setAttribute("style", "visibility: hidden;");
+	buttonEls[j].removeEventListener("click", getPick);
       }
     }
-    // check the guess and show resutls
-    showResult(checkAnswer(pick, i));
   }
-  endTheGame(true);
-  return;
+  function populateQnAs (question) {
+    // populate question and posisble answers
+    questionEl.textContent = question["question"];
+    let Answers = question["Answers"];
+    for (let i=0; i<Answers.length; i++) {
+     buttonEls[i+1].textContent = Answers[i];
+    }
+  }
+  function fillOptions (answers, i) {
+    for (let j=0; j<buttonEls.length; j++) {
+      let ans = answers[i]["Answers"];
+      buttonEls[j].textContent = ans;
+      guess = checkAnswer(selection,QnAs["questions"][i]["Answer"]);
+      showResult(guess);
+    }
+  }
+
+  let count = 0;
+  
+  function displayQuestion(Q, count){
+    questionEl.textContent = Q[0]["Answer"];
+    fillOptions(Q["question"], count);
+    for (let j=1; j<buttonEls.length; j++) {
+      let ans = answers[i]["Answers"];
+      buttonEls[j].textContent = ans;
+      guess = checkAnswer(selection,QnAs["questions"][i]["Answer"]);
+      showResult(guess);
+    }
+    guess = checkAnswer(selection,Q["Answer"] );
+    showResult(guess);
+    displayQuestion(Q, ++count)
+  }
+  
+  setUpTearDown(true);
+  displayQuestion(QnAs["questions"]);
+  setUpTearDown();
+
 }
+  //  setUpTearDown(true);
+//  // load up first question and manage loop mannually
+//  // when question is answerd call a function to answer question
+//  // to check and then load the next one
+//  //
+//  for (let i=0; i<QnAs["questions"].length; i++) {
+//    populateQnAs(QnAs["questions"][i]);
+//    console.log("Pick - " + pick);
+//    // want to put check answer in getpick
+//    // this function needs to call the render function for next question
+//    guess = checkAnswer(pick,QnAs["questions"][i]["Answer"] );
+//    showResult(guess);
+//    console.log(QnAs["questions"][i]);
+//  }
+//  setUpTearDown();
+//  endTheGame(true);
+//  return;
+//}
 
 
 /*------------------------------------------------
