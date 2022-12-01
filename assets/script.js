@@ -37,7 +37,9 @@ const QnAs = {
 		 "B when its storms",
 		 "C when the light is dim",
 		 "D when the strong walk no more"],
-      "Answer": "C"}]}
+     "Answer": "C"}]}
+//Q = QnAs['questions']
+console.log(QnAs);
 //-------------------------------------------->
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
@@ -46,24 +48,28 @@ let resultEl = document.querySelector("#result");
 let answersEls = document.querySelectorAll("li");
 let buttonEls = document.querySelectorAll("button");
 let timeEl = document.querySelector("#time");
-let highScoresEl = document.querySelector("#highScores");
+let highScoresEl = document.querySelector(".highScores");
 let highScoreEl = document.querySelector("#highScore");
 let initialsEl = document.querySelector("#highScoreInput");
-const secondsLeft = 10; //90;
+let  secondsLeft = 20; //90;
 let highScore = 0;
 let score = 0;
-
+let count = 0;
 let isCorrect = false;
 let guess = "";
 let selection = "";
 let Q = {};
+let penalty = 0;
 timeEl.textContent = secondsLeft
 
-function timer (seconds) {
+function timer () {
   let countDown = setInterval(function(){
-    seconds--;
-    timeEl.textContent = seconds;
-    if (seconds === 0){
+    secondsLeft--;
+    timeEl.textContent = secondsLeft;
+//    if (secondsLeft > 6) {
+//      secondsLeft -= penalty;
+//    } else
+      if (secondsLeft <= 0){
       clearInterval(countDown);
       // store score and go to end screen
       endTheGame(true);
@@ -75,7 +81,7 @@ function timer (seconds) {
  *Game play track
  *------------------------------------------------*/
 let start = function startGame(event){
-  startTheGame(QnAs);
+  startTheGame();
   return;
 }
 let end = function endGame(event){
@@ -83,22 +89,50 @@ let end = function endGame(event){
   return;
 }
 function startScreen() {
-  buttonEls[1].addEventListener("click", start);
-  buttonEls[2].addEventListener("click", end);
+  buttonEls[0].addEventListener("click", start);
+  buttonEls[1].addEventListener("click", end);
   return 0;
 }
+
+function fillOptions (answers, i) {
+  for (let j=0; j<buttonEls.length; j++) {
+    buttonEls[j].textContent = answers[j];
+    console.log("Button: "+answers[j]);
+  }
+}
+
+
+function displayQuestion(Q, count){
+  console.log("count is: " + count);
+  questionEl.textContent = Q[count]["question"];
+  console.log("Q['question']: " + Q[count]['question']);
+  fillOptions(Q[count]["Answers"], count);
+  showResult(guess);
+  if (count >= Q.length) {
+    displayQuestion(Q, ++count);
+  }
+}
+
+
 function checkAnswer(guess,qID) {
   console.log("Pick is: " + (guess === qID));
-  if (guess === qID){
-    score += 10;
-    return true;
+  count++;
+  if (count > QnAs['questions'].length) {
+    endTheGame(true);
   }
-  return false;
+  displayQuestion(QnAs["questions"], count);
+  if (guess !== qID){
+    secondsLeft -= 10;
+    return false;
+  }
+  return true;
 }
 
 let getPick = function pick(event) {
-selection = event.currentTarget.textContent.charAt(0);
- return event.currentTarget.textContent.charAt(0);
+  selection = event.currentTarget.textContent.charAt(0);
+  guess = checkAnswer(selection,QnAs['questions'][count]['Answer']);
+  //progress to the next question
+  return;
 }
 
 function showResult(result) {  
@@ -108,59 +142,26 @@ function showResult(result) {
   resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%; font-size: 2rem;");
   return;
 }
-
-function playTheGame(QnAs) {
-  function setUpTearDown (start) {
-    // set the base setting or buttons
-    for (let j=1; j<buttonEls.length; j++){
-      if (start) {
-	buttonEls[j].setAttribute("style", "visibility: visible;");
-	buttonEls[j].addEventListener("click", getPick);
-      } else {
-	buttonEls[j].setAttribute("style", "visibility: hidden;");
-	buttonEls[j].removeEventListener("click", getPick);
-      }
+function setUpTearDown (start) {
+  // set the base setting or buttons
+  for (let j=0; j<buttonEls.length; j++){
+    if (!start) {
+      buttonEls[j].setAttribute("style", "visibility: visible;");
+      buttonEls[j].addEventListener("click", getPick);
+    } else {
+      buttonEls[j].setAttribute("style", "visibility: hidden;");
+      buttonEls[j].removeEventListener("click", getPick);
     }
   }
-  function populateQnAs (question) {
-    // populate question and posisble answers
-    questionEl.textContent = question["question"];
-    let Answers = question["Answers"];
-    for (let i=0; i<Answers.length; i++) {
-     buttonEls[i+1].textContent = Answers[i];
-    }
-  }
-  function fillOptions (answers, i) {
-    for (let j=0; j<buttonEls.length; j++) {
-      let ans = answers[i]["Answers"];
-      buttonEls[j].textContent = ans;
-      guess = checkAnswer(selection,QnAs["questions"][i]["Answer"]);
-      showResult(guess);
-    }
-  }
-
-  let count = 0;
-  
-  function displayQuestion(Q, count){
-    questionEl.textContent = Q[0]["Answer"];
-    fillOptions(Q["question"], count);
-    for (let j=1; j<buttonEls.length; j++) {
-      let ans = answers[i]["Answers"];
-      buttonEls[j].textContent = ans;
-      guess = checkAnswer(selection,QnAs["questions"][i]["Answer"]);
-      showResult(guess);
-    }
-    guess = checkAnswer(selection,Q["Answer"] );
-    showResult(guess);
-    displayQuestion(Q, ++count)
-  }
-  
-  setUpTearDown(true);
-  displayQuestion(QnAs["questions"]);
-  setUpTearDown();
-
 }
-  //  setUpTearDown(true);
+
+function playTheGame() {
+  setUpTearDown(true);
+  console.log("QnAs: " + QnAs);
+  displayQuestion(QnAs["questions"], count);
+  setUpTearDown();
+}
+//  setUpTearDown(true);
 //  // load up first question and manage loop mannually
 //  // when question is answerd call a function to answer question
 //  // to check and then load the next one
@@ -251,7 +252,7 @@ function highScorePage() {
 
 function endTheGame(wasPlayed) {
   // get timer to zero out
-  
+  timeEl.textContent = 0;  
   if (!wasPlayed) {
     questionEl.textContent = "You didn't want to play our game?";
     // end gamee when there was none played game
@@ -292,16 +293,18 @@ function endTheGame(wasPlayed) {
   } 
 }
 
-function startTheGame() {  
+function startTheGame() {
+
   // remove the two functions added in the start screen
-  buttonEls[1].removeEventListener("click", start);
-  buttonEls[2].removeEventListener("click", end);
+  buttonEls[0].removeEventListener("click", start);
+  buttonEls[1].removeEventListener("click", end);
   // unhide timer, highScore button and score(highScoreEl)
   timerEl.setAttribute("style", "visibility: visible;");
   highScoresEl.setAttribute("style", "visibility: visible;");
   highScoreEl.setAttribute("style", "visibility: visible;");
-  timer(secondsLeft);
-  playTheGame(QnAs);
+//  timer(secondsLeft);
+  timer();
+  playTheGame();
 }
 
   
