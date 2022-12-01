@@ -8,6 +8,11 @@ html {
   font-size: 62.5%;
 }
 
+h1 {
+  margin: 1rem 0rem;
+  font: 10rem;
+}
+
 header {
   margin: 0.25rem 0.25rem;
   display: flex;
@@ -43,9 +48,10 @@ a {
   align-content:center;
   margin: 3rem 0rem 1rem 0rem;
 }
-
-#highScores button {
+.highScores  {
   visibility: hidden;
+  background: white;
+  color:blue;
 }
 
 #highScore {
