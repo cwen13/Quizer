@@ -1,3 +1,10 @@
+let highScores = JSON.parse(localStorage.getItem("highScores"));
+let scoreList = [];
+let highestScore = 0;
+let index = 0;
+let highScoreList = [];
+let initials = "";
+
 function displayScores(scores){
   let ulEl = document.querySelector("ul");
 
@@ -5,29 +12,23 @@ function displayScores(scores){
     let liEl = document.createElement("li");
     liEl.textContent = `${scores[i][0]} - ${scores[i][1]}`;
     ulEl.appendChild(liEl);
-//    liEl.textContent = "";
   }
   
 }
 function showHighScores() {
-  let highScores = JSON.parse(localStorage.getItem("highScores"));
-  // highScore shouuld be
-  let scoreList = [];
-  let highScore = 0;
-  let index = 0;
-  let highScoreList = [];
-//  while (highScores.length > 0) {
-    highscore = highScores[0][1];
+  while (highScores.length > 0) {
+    highestScore = highScores[0][1];
     index = 0;
-//    for (let i=1;i>highScores.length; i++){
-//      if (highScore < highScores[i][1]) {
-//	highScore = highScores[i][1];
-//	index = i;
-//      }
-//    }
-//    scoreList.push(highScore);
-//    highScores.splice(index,1);
-//  }
+    for (let i=1;i>highScores.length; i++){
+      if (highestScore < highScores[i][1]) {
+	highestScore = highScores[i][1];
+	index = i;
+      }
+    }
+    console.log(highestScore);
+    initials = highScores.splice(index,1)[0][0];
+    scoreList.push([initials,highestScore]);
+  }
   displayScores(scoreList);
 }
 

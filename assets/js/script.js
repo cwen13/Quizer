@@ -50,11 +50,11 @@ let highScoreEl = document.querySelector("#highScore");
 let initialsEl = document.querySelector("#highScoreInput");
 let scoreEl = document.querySelector("#score");
 let secondsLeft = 90;
-let highScore = 0;
 let score = 0;
 let count = 0;
+let guess;
 let isCorrect = false;
-let guess = "";
+let highScore = [];
 let selection = "";
 let playing = true;
 
@@ -185,14 +185,13 @@ let enterHighScore = function(event){
    * check it against any other scores
    * update table
    */
+  scoreList = JSON.parse(localStorage.getItem("highScores"));
+  highScore = [initialsEl.value, score]
+  scoreList.push(highScore);
+  localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
   initialsEl.setAttribute("style","visibility: hidden;");
-  if (score > highScore) {
-//    highScore += [initials, score]
-//    localStorage.setItem(
-  } else {
-  }
-//  Need to get to link link
+  
   return;  
 }
   
