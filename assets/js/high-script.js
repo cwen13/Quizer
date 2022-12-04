@@ -5,10 +5,10 @@ let index = 0;
 let highScoreList = [];
 let initials = "";
 let count = 1;
+let ulEl = document.querySelector("ul");
+
 
 function displayScores(scores){
-  let ulEl = document.querySelector("ul");
-
   for(let i=0;i<scores.length;i++) {
     let liEl = document.createElement("li");
     liEl.textContent = `${count}. ${scores[i][0]} - ${scores[i][1]}`;
@@ -17,26 +17,26 @@ function displayScores(scores){
     } else {
       liEl.setAttribute("style", "background: red;");
     }
-//    count++;
     ulEl.appendChild(liEl);
   }
   
 }
+
 function showHighScores() {
   while (highScores.length > 0) {
-    highestScore = highScores[0][1];
-    index = 0;
-    for (let i=1;i>highScores.length; i++){
+    for (let i=0;i>highScores.length; i++){
       if (highestScore < highScores[i][1]) {
 	highestScore = highScores[i][1];
-	index = i;
+	index = i;	
       }
+      console.log(highestScore);
+      initials = highScores.splice(index,1)[0][0];
+      scoreList.push([initials,highestScore]);
     }
-    console.log(highestScore);
-    initials = highScores.splice(index,1)[0][0];
-    scoreList.push([initials,highestScore]);
+    displayScores(scoreList);
   }
-  displayScores(scoreList);
+  return;
 }
+
 
 showHighScores();
