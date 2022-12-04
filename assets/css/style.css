@@ -19,6 +19,7 @@ header {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  font-size: 1.5rem;
 }
 
 
@@ -27,7 +28,6 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 }
 
 a {
@@ -43,17 +43,19 @@ a {
   margin: 0.25rem;
 }
 
+.highScores  {
+  visibility: hidden;
+  background: white;
+  color:blue;
+}
+
+
 #question {
   font-size: 3rem;
   align-content:center;
   text-align: center;
   margin: 3rem 0rem 1rem 0rem;
   width: 75%;
-}
-.highScores  {
-  visibility: hidden;
-  background: white;
-  color:blue;
 }
 
 #highScore {

@@ -18,11 +18,10 @@ let highScore = [];
 let selection = "";
 let playing = true;
 
-function timer (sec) {
+function timer (secondsLeft) {
   let countDown = setInterval(function(){
-    sec--;
-    timeEl.textContent = sec;
-      if (sec <= 0){
+    timeEl.textContent = secondsLeft;
+      if (secondsLeft <= 0){
 	clearInterval(countDown);
 	// store score and go to end screen
 	timeEl.textContent = 0;
@@ -34,6 +33,7 @@ function timer (sec) {
 	timeEl.textContent = 0;
 	endTheGame(true);
       }
+    secondsLeft--;
   },1000);
 }
 
@@ -74,13 +74,15 @@ function checkAnswer(guess,qID) {
   } else {
     displayQuestion(QnAs["questions"], count);
     if (guess !== qID){
-      secondsLeft -= 10;
+      isCorrect = false;
+      secondsLeft -= 15;
       return false;
     }
   }
+  isCorrect = true;
   score += 10;
   scoreEl.textContent = score;
-  showResult(guess);
+  showResult(isCorrect);
   return true;
 }
 
@@ -99,12 +101,19 @@ function showResult(result) {
 	clearInterval(countDown);
 	resultEl.setAttribute("style","visibility: hidden");
       }
-    },100);
+    },500);
   }
-  
+  let answerCheck;
   // show if choice is correct/wrong and add solid overline to display
-  resultEl.textContent = result ? "Correct" : "Wrong";
-  resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%; font-size: 2rem;");
+  console.log(result);
+  if (result) {
+    answerCheck = "Correct";
+  } else {
+    answerCheck = "Wrong";
+  }
+  //  resultEl.textContent = result ? "Correct" : "Wrong";
+  resultEl.textContent = answerCheck;
+  resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%; font-size: 2rem; visibility: visible;");
   ResultsTimer(1); 
   return 1;
 }
@@ -208,7 +217,6 @@ function highScorePage() {
 function endTheGame(wasPlayed) {
   playing=false;
   // get timer to zero out
-  secondsLeft=90;
   timeEl.textContent = 0;
   // hide the correct/wrong at bottom
   resultEl.setAttribute("style", "visibility: hidden;");
