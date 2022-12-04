@@ -1,0 +1,25 @@
+// Styel sheet for highScores page
+
+* {
+}
+
+h1 {
+  font-size: 4rem;
+  margin: 1rem 1rem 1rem 1rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#highScores {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 1.5rem;
+  background: purple;
+
+}

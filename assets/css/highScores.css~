@@ -1,0 +1,8 @@
+// Styel sheet for highScores page
+
+* {
+}
+
+h1 {
+  4rem;
+}
