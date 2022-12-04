@@ -16,28 +16,32 @@
   */
 // JS file for questions and answers
 //--------JSON-Questions-&-Answers------------>
-const QnAs = {
-  "questions": [
-    {"question": "String for a question0?",
-     "Answers": ["A is a lonely number",
-		 "B is for button",
-		 "C is a coper",
-		 "D is devious"],
-      "Answer": "A"},
-    {"question": "String for the question1?",
-     "Answers": ["A if you go",
-		 "B if you see",
-		 "C if you play",
-		 "D if your good"],
-      "Answer": "B"},
-    {"question": "String for this question2?",
-     "Answers": ["A when its dark",
-		 "B when its storms",
-		 "C when the light is dim",
-		 "D when the strong walk no more"],
-     "Answer": "C"}]}
+//const QnAs = {
+//  "questions": [
+//    {"question": "String for a question0?",
+//     "Answers": ["A is a lonely number",
+//		 "B is for button",
+//		 "C is a coper",
+//		 "D is devious"],
+//      "Answer": "A"},
+//    {"question": "String for the question1?",
+//     "Answers": ["A if you go",
+//		 "B if you see",
+//		 "C if you play",
+//		 "D if your good"],
+//      "Answer": "B"},
+//    {"question": "String for this question2?",
+//     "Answers": ["A when its dark",
+//		 "B when its storms",
+//		 "C when the light is dim",
+//		 "D when the strong walk no more"],
+//     "Answer": "C"}]}
 //console.log(QnAs);
 //-------------------------------------------->
+
+import data from "./questionsAndAnswers.json" assert {type: "JSON"}
+console.log(data)'
+
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
 let answersEl = document.querySelector("#answers");
@@ -68,6 +72,7 @@ function timer (sec) {
 	timeEl.textContent = 0;
 	endTheGame(true);
       } else if (!playing) {
+	console.log("Play is false");
 	clearInterval(countDown);
 	// store score and go to end screen
 	timeEl.textContent = 0;
@@ -75,40 +80,40 @@ function timer (sec) {
       }
   },1000);
 }
+
 /*------------------------------------------------*
  *-------------------Game-play--------------------*
  *------------------------------------------------*/
 let start = function startGame(event){
   timer(secondsLeft); 
   startTheGame();
-  return;
+  return 1;
 }
 
 let end = function endGame(event){
   endTheGame(false);
-  return;
+  return 1;
 }
 
 function startScreen() {
   buttonEls[0].addEventListener("click", start);
   buttonEls[1].addEventListener("click", end);
-  return;
+  return 1;
 }
 
 function displayQuestion(Q, count){
-  // Update questions
+  // Update questions and show answers
   questionEl.textContent = Q[count]["question"];
-  // Update possible answers buttons
   for (let j=0; j<buttonEls.length; j++) {
     buttonEls[j].textContent = Q[count]["Answers"][j];
   }
-  showResult(guess);
-  return;
+  return 1;
 }
 
 function checkAnswer(guess,qID) {
   count++;
   if (count >= QnAs['questions'].length) {
+    playing = false;
     endTheGame(true);
   } else {
     displayQuestion(QnAs["questions"], count);
@@ -119,22 +124,33 @@ function checkAnswer(guess,qID) {
   }
   score += 10;
   scoreEl.textContent = score;
+  showResult(guess);
   return true;
 }
 
 let getPick = function pick(event) {
   selection = event.currentTarget.textContent.charAt(0);
   guess = checkAnswer(selection,QnAs['questions'][count]['Answer']);
-  return;
+  return 1;
 }
 
 function showResult(result) {  
-  let timeR = secondsLeft;
-  if (count === 0) return;  
+  function ResultsTimer (sec) {
+    let countDown = setInterval(function(){
+      sec--;
+      timeEl.textContent = sec;
+      if (sec <= 0){
+	clearInterval(countDown);
+	resultEl.setAttribute("style","visibility: hidden");
+      }
+    },100);
+  }
+  
   // show if choice is correct/wrong and add solid overline to display
   resultEl.textContent = result ? "Correct" : "Wrong";
   resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%; font-size: 2rem;");
-  return;
+  ResultsTimer(1); 
+  return 1;
 }
 
 function setUpTearDown (start) {
@@ -150,14 +166,14 @@ function setUpTearDown (start) {
       buttonEls[j].removeEventListener("click", getPick);
     }
   }
-  return;
+  return 1;
 }
 
 function playTheGame() {
   setUpTearDown(true);
   displayQuestion(QnAs["questions"], count);
   setUpTearDown();
-  return;
+  return 1;
 }
 
 /*------------------------------------------------
@@ -181,7 +197,7 @@ function shutDown() {
 	buttonEls[i].appendChild(blackLink);
       }
     }
-  return;
+  return 1;
 }
 
 let enterHighScore = function(event){
@@ -191,15 +207,18 @@ let enterHighScore = function(event){
    * check it against any other scores
    * update table
    */
-  // pull schore in a array from localStorage 
-  scoreList = JSON.parse(localStorage.getItem("highScores"));
+  // pull score in a array from localStorage
+  try {
+    scoreList = JSON.parse(localStorage.getItem("highScores"));
+  } catch (e) {
+    scoreList = [];
+  }
+  
   // add intials entered and score into local Stoarge
   scoreList.push([initialsEl.value, score]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
-  initialsEl.setAttribute("style","visibility: hidden;");
-  
-  return;  
+  return 1;  
 }
   
 function highScorePage() {
@@ -234,7 +253,6 @@ function endTheGame(wasPlayed) {
   // get timer to zero out
   secondsLeft=90;
   timeEl.textContent = 0;
-//  clearInterval(countDown);
   // hide the correct/wrong at bottom
   resultEl.setAttribute("style", "visibility: hidden;");
   // remove the getPick listener
@@ -243,10 +261,10 @@ function endTheGame(wasPlayed) {
   }
   // if no game was played
   if (!wasPlayed) {
-    questionEl.textContent = "You didn't want to play our game?";
-    // keep button1's listener but change text
+    questionEl.textContent = "You didn't want to play the game?";
+    // keep button0's listener but change text
     buttonEls[0].textContent = "No, I actually want to play.";
-    // relink up button2 and text
+    // relink up button1 and text
     buttonEls[1].textContent = "Shut me down?";
     buttonEls[1].addEventListener("click", shutItDown);    
   } else {
@@ -260,42 +278,42 @@ function endTheGame(wasPlayed) {
       case 0:
 	count = 0;
 	secondsLeft = 90 ;
-	console.log("Switched text" + i);
 	buttonEls[i].textContent = "Want to play again?";
 	buttonEls[i].addEventListener("click", start);
 	break;
       case 1:
-	console.log("Switched text" + i);
 	buttonEls[i].textContent = "Enter your highScore?";
 	buttonEls[i].addEventListener("click", highScorePage);
 	break;
       case 2:
       case 3:
 	buttonEls[i].setAttribute("style", "visibility: hidden;");
-	console.log("Switched text" + i);
 	break;
       }
     }
-  } 
+  }
+  return 1;
 }
 
 function startTheGame() {
   // remove the two functions added in the start screen
   buttonEls[0].removeEventListener("click", start);
   buttonEls[1].removeEventListener("click", end);
-  // unhide timer, highScore button and score(highScoreEl)
+  // unhide timer, highScore anchor, and score
   timerEl.setAttribute("style", "visibility: visible;");
   highScoresEl.setAttribute("style", "visibility: visible;");
   highScoreEl.setAttribute("style", "visibility: visible;");
+  // remove all possible listners on the buttons
   for (let i=0; i<buttonEls.length; i++) {
     buttonEls[i].removeEventListener("click", start);
     buttonEls[i].removeEventListener("click", end);
     buttonEls[i].removeEventListener("click", highScorePage);
     buttonEls[i].removeEventListener("click", shutItDown);
-    buttonEls[i].removeEventListener("click", getPick);
   }
+  playing = true;
   playTheGame();
 }
-  
+
+// wrapper for the start of the game
 startScreen();
 
