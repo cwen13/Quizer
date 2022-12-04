@@ -40,7 +40,8 @@
 //-------------------------------------------->
 
 import data from "./questionsAndAnswers.json" assert {type: "JSON"}
-console.log(data)'
+console.log(data)
+const QnAs = data;
 
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
