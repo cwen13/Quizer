@@ -16,28 +16,32 @@
   */
 // JS file for questions and answers
 //--------JSON-Questions-&-Answers------------>
-const QnAs = {
-  "questions": [
-    {"question": "String for a question0?",
-     "Answers": ["A is a lonely number",
-		 "B is for button",
-		 "C is a coper",
-		 "D is devious"],
-      "Answer": "A"},
-    {"question": "String for the question1?",
-     "Answers": ["A if you go",
-		 "B if you see",
-		 "C if you play",
-		 "D if your good"],
-      "Answer": "B"},
-    {"question": "String for this question2?",
-     "Answers": ["A when its dark",
-		 "B when its storms",
-		 "C when the light is dim",
-		 "D when the strong walk no more"],
-     "Answer": "C"}]}
+//const QnAs = {
+//  "questions": [
+//    {"question": "String for a question0?",
+//     "Answers": ["A is a lonely number",
+//		 "B is for button",
+//		 "C is a coper",
+//		 "D is devious"],
+//      "Answer": "A"},
+//    {"question": "String for the question1?",
+//     "Answers": ["A if you go",
+//		 "B if you see",
+//		 "C if you play",
+//		 "D if your good"],
+//      "Answer": "B"},
+//    {"question": "String for this question2?",
+//     "Answers": ["A when its dark",
+//		 "B when its storms",
+//		 "C when the light is dim",
+//		 "D when the strong walk no more"],
+//     "Answer": "C"}]}
 //console.log(QnAs);
 //-------------------------------------------->
+
+import data from "./questionsAndAnswers.json" assert {type: "JSON"}
+console.log(data)'
+
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
 let answersEl = document.querySelector("#answers");
@@ -214,8 +218,6 @@ let enterHighScore = function(event){
   scoreList.push([initialsEl.value, score]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
-  initialsEl.setAttribute("style","visibility: hidden;");
-  
   return 1;  
 }
   
