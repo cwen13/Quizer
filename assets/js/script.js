@@ -78,34 +78,32 @@ function timer (sec) {
 /*------------------------------------------------*
  *-------------------Game-play--------------------*
  *------------------------------------------------*/
-
 let start = function startGame(event){
   timer(secondsLeft); 
   startTheGame();
   return;
 }
+
 let end = function endGame(event){
   endTheGame(false);
   return;
 }
+
 function startScreen() {
   buttonEls[0].addEventListener("click", start);
   buttonEls[1].addEventListener("click", end);
   return;
 }
-function fillOptions (answers, i) {
-  for (let j=0; j<buttonEls.length; j++) {
-    buttonEls[j].textContent = answers[j];
-  }
-}
 
 function displayQuestion(Q, count){
+  // Update questions
   questionEl.textContent = Q[count]["question"];
-  fillOptions(Q[count]["Answers"], count);
-  if (count >= Q.length) {
-    displayQuestion(Q, ++count);
+  // Update possible answers buttons
+  for (let j=0; j<buttonEls.length; j++) {
+    buttonEls[j].textContent = Q[count]["Answers"][j];
   }
   showResult(guess);
+  return;
 }
 
 function checkAnswer(guess,qID) {
@@ -123,6 +121,7 @@ function checkAnswer(guess,qID) {
   scoreEl.textContent = score;
   return true;
 }
+
 let getPick = function pick(event) {
   selection = event.currentTarget.textContent.charAt(0);
   guess = checkAnswer(selection,QnAs['questions'][count]['Answer']);
@@ -131,29 +130,34 @@ let getPick = function pick(event) {
 
 function showResult(result) {  
   let timeR = secondsLeft;
+  if (count === 0) return;  
   // show if choice is correct/wrong and add solid overline to display
-  if (count ===0) return;  
   resultEl.textContent = result ? "Correct" : "Wrong";
   resultEl.setAttribute("style", "border-style: solid none none none; border-width: 0.25rem; width: 50%; font-size: 2rem;");
   return;
 }
+
 function setUpTearDown (start) {
   // set the base setting or buttons
   for (let j=0; j<buttonEls.length; j++){
     if (!start) {
+      // set up question buttons
       buttonEls[j].setAttribute("style", "visibility: visible;");
       buttonEls[j].addEventListener("click", getPick);
     } else {
+      // tear down butttons and remove attached funciton
       buttonEls[j].setAttribute("style", "visibility: hidden;");
       buttonEls[j].removeEventListener("click", getPick);
     }
   }
+  return;
 }
 
 function playTheGame() {
   setUpTearDown(true);
   displayQuestion(QnAs["questions"], count);
   setUpTearDown();
+  return;
 }
 
 /*------------------------------------------------
@@ -162,6 +166,7 @@ function playTheGame() {
 let shutItDown = function (event) {
   shutDown();
 }
+
 function shutDown() {
     for (let i=0; i<buttonEls.length - 1; i++) {
       if (i !== 1){
@@ -176,6 +181,7 @@ function shutDown() {
 	buttonEls[i].appendChild(blackLink);
       }
     }
+  return;
 }
 
 let enterHighScore = function(event){
@@ -185,9 +191,10 @@ let enterHighScore = function(event){
    * check it against any other scores
    * update table
    */
+  // pull schore in a array from localStorage 
   scoreList = JSON.parse(localStorage.getItem("highScores"));
-  highScore = [initialsEl.value, score]
-  scoreList.push(highScore);
+  // add intials entered and score into local Stoarge
+  scoreList.push([initialsEl.value, score]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
   initialsEl.setAttribute("style","visibility: hidden;");
@@ -198,7 +205,7 @@ let enterHighScore = function(event){
 function highScorePage() {
   // update text and add text box and comment
   questionEl.textContent = "Enter your intials";
-  initialsEl.setAttribute("style","visibility: visible;");
+  initialsEl.setAttribute("style", "visibility: visible;");
   // clear button visibility and functions
   for (let i=0; i<buttonEls.length; i++) {
     switch (i) {
@@ -287,10 +294,7 @@ function startTheGame() {
     buttonEls[i].removeEventListener("click", shutItDown);
     buttonEls[i].removeEventListener("click", getPick);
   }
-
-
   playTheGame();
-
 }
   
 startScreen();

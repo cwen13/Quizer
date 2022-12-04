@@ -11,13 +11,13 @@ function displayScores(scores){
 
   for(let i=0;i<scores.length;i++) {
     let liEl = document.createElement("li");
-    liEl.textContent = `${scores[i][0]} - ${scores[i][1]}`;
-    if ((count % 2) == 0) {
+    liEl.textContent = `${count}. ${scores[i][0]} - ${scores[i][1]}`;
+    if ((count++ % 2) == 0) {
       liEl.setAttribute("style", "background: purple;");
     } else {
       liEl.setAttribute("style", "background: red;");
     }
-    count++;
+//    count++;
     ulEl.appendChild(liEl);
   }
   
