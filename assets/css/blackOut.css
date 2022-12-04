@@ -1,26 +1,30 @@
 :root {
   --text-color: #fff;
   --background-color: #000;
-  --section0-color: pink;
-  --section1-color: purple;
-  --section2-color: red;
 }
 
 * {
   background-color: var(--background-color);
 }
 
-header h1 {
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+} 
+
+h1 {
   color: var(--text-color);
+  align-items: center;
+  margin: 5rem 0rem 50rem 0rem;
+  font-size: 5rem;
+  text-align: center;
 }
 
-#section0 {
-  color: var(--section0-color);
-}
-
-#section1 {
-  color: var(--section1-color);
-}
-#section2 {
-  color: var(--section2-color);
+footer {
+  color: var(--text-color);
+  align-items: center;
+  margin: 0rem 0rem 5rem 0rem;
 }
