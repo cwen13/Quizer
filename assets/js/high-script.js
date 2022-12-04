@@ -4,6 +4,7 @@ let highestScore = 0;
 let index = 0;
 let highScoreList = [];
 let initials = "";
+let count = 1;
 
 function displayScores(scores){
   let ulEl = document.querySelector("ul");
@@ -11,6 +12,12 @@ function displayScores(scores){
   for(let i=0;i<scores.length;i++) {
     let liEl = document.createElement("li");
     liEl.textContent = `${scores[i][0]} - ${scores[i][1]}`;
+    if ((count % 2) == 0) {
+      liEl.setAttribute("style", "background: purple;");
+    } else {
+      liEl.setAttribute("style", "background: red;");
+    }
+    count++;
     ulEl.appendChild(liEl);
   }
   
