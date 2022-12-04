@@ -13,7 +13,9 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  background: gold;
 }
+
 
 #highScores {
   display: flex;

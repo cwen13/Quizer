@@ -1,47 +1,3 @@
-/*
-  Functions
-  + in timer
-   - start timer
-   - stop timer
-   - reduce time on wrong answer
-  + init to build home page
-  + render question+
-   - build question text/buttons
-  + check answer
-   - if correct give points and render next question
-   - if wrong reduce time/maybe lose points render next question
-  + check if done
-   - if not go to next question
-   - if done render highscore form
-  */
-// JS file for questions and answers
-//--------JSON-Questions-&-Answers------------>
-//const QnAs = {
-//  "questions": [
-//    {"question": "String for a question0?",
-//     "Answers": ["A is a lonely number",
-//		 "B is for button",
-//		 "C is a coper",
-//		 "D is devious"],
-//      "Answer": "A"},
-//    {"question": "String for the question1?",
-//     "Answers": ["A if you go",
-//		 "B if you see",
-//		 "C if you play",
-//		 "D if your good"],
-//      "Answer": "B"},
-//    {"question": "String for this question2?",
-//     "Answers": ["A when its dark",
-//		 "B when its storms",
-//		 "C when the light is dim",
-//		 "D when the strong walk no more"],
-//     "Answer": "C"}]}
-//console.log(QnAs);
-//-------------------------------------------->
-
-import data from "./questionsAndAnswers.json" assert {type: "JSON"}
-console.log(data)'
-
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
 let answersEl = document.querySelector("#answers");
@@ -105,7 +61,7 @@ function displayQuestion(Q, count){
   // Update questions and show answers
   questionEl.textContent = Q[count]["question"];
   for (let j=0; j<buttonEls.length; j++) {
-    buttonEls[j].textContent = Q[count]["Answers"][j];
+    buttonEls[j].textContent = Q[count]["answers"][j];
   }
   return 1;
 }
@@ -130,7 +86,7 @@ function checkAnswer(guess,qID) {
 
 let getPick = function pick(event) {
   selection = event.currentTarget.textContent.charAt(0);
-  guess = checkAnswer(selection,QnAs['questions'][count]['Answer']);
+  guess = checkAnswer(selection,QnAs['questions'][count]['answer']);
   return 1;
 }
 
@@ -170,6 +126,7 @@ function setUpTearDown (start) {
 }
 
 function playTheGame() {
+  score = 0;
   setUpTearDown(true);
   displayQuestion(QnAs["questions"], count);
   setUpTearDown();
@@ -177,7 +134,7 @@ function playTheGame() {
 }
 
 /*------------------------------------------------
- *End Game track
+ *----------------End-Game-track------------------
  *------------------------------------------------*/
 let shutItDown = function (event) {
   shutDown();
@@ -212,10 +169,10 @@ let enterHighScore = function(event){
     scoreList = JSON.parse(localStorage.getItem("highScores"));
   } catch (e) {
     scoreList = [];
-  }
-  
+  }  
   // add intials entered and score into local Stoarge
-  scoreList.push([initialsEl.value, score]);
+  console.log(scoreEl.textContent);
+  scoreList.push([initialsEl.value, scoreEl.textContent]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
   return 1;  
@@ -276,8 +233,6 @@ function endTheGame(wasPlayed) {
       buttonEls[i].setAttribute("style", "visibility: visible;");
       switch (i) {
       case 0:
-	count = 0;
-	secondsLeft = 90 ;
 	buttonEls[i].textContent = "Want to play again?";
 	buttonEls[i].addEventListener("click", start);
 	break;
@@ -303,17 +258,84 @@ function startTheGame() {
   timerEl.setAttribute("style", "visibility: visible;");
   highScoresEl.setAttribute("style", "visibility: visible;");
   highScoreEl.setAttribute("style", "visibility: visible;");
-  // remove all possible listners on the buttons
+  // remove possible leftover listners on the buttons
   for (let i=0; i<buttonEls.length; i++) {
-    buttonEls[i].removeEventListener("click", start);
-    buttonEls[i].removeEventListener("click", end);
     buttonEls[i].removeEventListener("click", highScorePage);
     buttonEls[i].removeEventListener("click", shutItDown);
   }
+  count = 0;
+  secondsLeft = 90 ;
   playing = true;
+  scoreEl.textContent = score;
   playTheGame();
 }
 
 // wrapper for the start of the game
 startScreen();
 
+/* JS file for questions and answers
+ *--------JSON-Questions-&-Answers------------*/
+const QnAs = {
+  "questions": [
+    {"question": "What is the out put of 'typeof' when given an array?",
+     "answers": ["A. Object",
+		 "B. Array",
+		 "C. String",
+		 "D. Funciton"],
+      "answer": "A"},
+    {"question": "Given an array what is the index of the first element?",
+     "answers": ["A. 1",
+		 "B. 0",
+		 "C. A",
+		 "D. a"],
+      "answer": "B"},
+    {"question": "What is it called when a function calls it self?",
+     "answers": ["A. Reflection",
+		 "B. Refraction",
+		 "C. Recursive",
+		 "D. Retrograde"],
+     "answer": "C"},
+    {"question": "Is a semi-colon required at the end of every line of JS code?",
+     "answers": ["A. Yes",
+		 "B. No",
+		 "C. Inside of a loop body",
+		 "D. Inside of an if body"],
+     "answer": "B"},
+    {"question": "How is JS typed?",
+     "answers": ["A. Dynamic",
+		 "B. Static",
+		 "C. Inferred",
+		 "D. Linear"],
+     "answer": "A"},
+    {"question": "JavaScript is a sub set of Java?",
+     "answers": ["A. Yes",
+		 "B. No",
+		 "C. Everybit",
+		 "D. Everybyte"],
+     "answer": "A"},
+    {"question": "JavaScript was created in?",
+     "answers": ["A. 1984",
+		 "B. 1993",
+		 "C. 1954",
+		 "D. 1995"],
+     "answer": "D"},
+    {"question": "How many threads does JavaScript have?",
+     "answers": ["A. One",
+		 "B. Two",
+		 "C. Multi-threads",
+		 "D. Three"],
+     "answer": "A"},
+    {"question": "JSON stands for",
+     "answers": ["A. Just Store Objects Now",
+		 "B. JavaScript Object Notation",
+		 "C. Java Scan Object Notation",
+		 "D. JSON Style Of Notation"],
+     "answer": "B"},
+    {"question": "Typscript is what?",
+     "answers": ["A. JavaScript with capital letters.",
+		 "B. Strict syntactical superset of JavaScript.",
+		 "C. Type based JavaScript.",
+		 "D. Javascript with a fancy name."],
+     "answer": "B"}
+  ]
+}

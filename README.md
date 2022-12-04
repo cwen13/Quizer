@@ -1,2 +1,4 @@
 # Quizer
-Browser quiz game
+In browser JS quiz game
+
+

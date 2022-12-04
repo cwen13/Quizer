@@ -46,7 +46,9 @@ a {
 #question {
   font-size: 3rem;
   align-content:center;
+  text-align: center;
   margin: 3rem 0rem 1rem 0rem;
+  width: 75%;
 }
 .highScores  {
   visibility: hidden;
