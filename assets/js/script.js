@@ -14,34 +14,6 @@
    - if not go to next question
    - if done render highscore form
   */
-// JS file for questions and answers
-//--------JSON-Questions-&-Answers------------>
-//const QnAs = {
-//  "questions": [
-//    {"question": "String for a question0?",
-//     "Answers": ["A is a lonely number",
-//		 "B is for button",
-//		 "C is a coper",
-//		 "D is devious"],
-//      "Answer": "A"},
-//    {"question": "String for the question1?",
-//     "Answers": ["A if you go",
-//		 "B if you see",
-//		 "C if you play",
-//		 "D if your good"],
-//      "Answer": "B"},
-//    {"question": "String for this question2?",
-//     "Answers": ["A when its dark",
-//		 "B when its storms",
-//		 "C when the light is dim",
-//		 "D when the strong walk no more"],
-//     "Answer": "C"}]}
-//console.log(QnAs);
-//-------------------------------------------->
-
-import data from "./questionsAndAnswers.json" assert {type: "JSON"}
-console.log(data)
-const QnAs = data;
 
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
@@ -106,7 +78,7 @@ function displayQuestion(Q, count){
   // Update questions and show answers
   questionEl.textContent = Q[count]["question"];
   for (let j=0; j<buttonEls.length; j++) {
-    buttonEls[j].textContent = Q[count]["Answers"][j];
+    buttonEls[j].textContent = Q[count]["answers"][j];
   }
   return 1;
 }
@@ -131,7 +103,7 @@ function checkAnswer(guess,qID) {
 
 let getPick = function pick(event) {
   selection = event.currentTarget.textContent.charAt(0);
-  guess = checkAnswer(selection,QnAs['questions'][count]['Answer']);
+  guess = checkAnswer(selection,QnAs['questions'][count]['answer']);
   return 1;
 }
 
@@ -178,7 +150,7 @@ function playTheGame() {
 }
 
 /*------------------------------------------------
- *End Game track
+ *----------------End-Game-track------------------
  *------------------------------------------------*/
 let shutItDown = function (event) {
   shutDown();
@@ -304,17 +276,39 @@ function startTheGame() {
   timerEl.setAttribute("style", "visibility: visible;");
   highScoresEl.setAttribute("style", "visibility: visible;");
   highScoreEl.setAttribute("style", "visibility: visible;");
-  // remove all possible listners on the buttons
+  // remove possible leftover listners on the buttons
   for (let i=0; i<buttonEls.length; i++) {
-    buttonEls[i].removeEventListener("click", start);
-    buttonEls[i].removeEventListener("click", end);
     buttonEls[i].removeEventListener("click", highScorePage);
     buttonEls[i].removeEventListener("click", shutItDown);
   }
   playing = true;
+  score = 0;
+  scoreEl.textContent = score;
   playTheGame();
 }
 
 // wrapper for the start of the game
 startScreen();
 
+/* JS file for questions and answers
+ *--------JSON-Questions-&-Answers------------*/
+const QnAs = {
+  "questions": [
+    {"question": "What is the out put of 'typeof' when given an array?",
+     "answers": ["A. Object",
+		 "B. Array",
+		 "C. String",
+		 "D. Funciton"],
+      "answer": "A"},
+    {"question": "String for the question1?",
+     "answers": ["A if you go",
+		 "B if you see",
+		 "C if you play",
+		 "D if your good"],
+      "answer": "B"},
+    {"question": "String for this question2?",
+     "answers": ["A when its dark",
+		 "B when its storms",
+		 "C when the light is dim",
+		 "D when the strong walk no more"],
+     "answer": "C"}]}

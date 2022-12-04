@@ -4,7 +4,6 @@ let highestScore = 0;
 let index = 0;
 let highScoreList = [];
 let initials = "";
-let count = 1;
 let ulEl = document.querySelector("ul");
 
 
@@ -17,11 +16,11 @@ function displayScores(scores){
   } else {
     for(let i=0;i<scores.length;i++) {
       let liEl = document.createElement("li");
-      liEl.textContent = `${count}. ${scores[i][0]} - ${scores[i][1]}`;
-      if ((count++ % 2) == 0) {
-	liEl.setAttribute("style", "background: purple;");
+      liEl.textContent = `${i+1}. ${scores[i][0]} - ${scores[i][1]}`;
+      if ((i % 2) == 0) {
+	liEl.setAttribute("style", "background: #fc0025;");
       } else {
-	liEl.setAttribute("style", "background: red;");
+	liEl.setAttribute("style", "background: #fc7b8f;");
       }
       ulEl.appendChild(liEl);
     }
@@ -35,18 +34,19 @@ function showHighScores() {
   } catch (e) {
     highScores.push(['This could', ' be you']);
   }
-  if (highScores[0][0] === "This could"){
+  if (highScores[0][0] == "This could"){
     displayScores(highScores);
     return;
   } else {
     while (highScores.length > 0) {
-      for (let i=0;i>highScores.length; i++){
-	if (highestScore < highScores[i][1]) {
+      highestScore = 0;
+      for (let i=0;i<highScores.length; i++){
+	if (highestScore <  highScores[i][1]) {
 	  highestScore = highScores[i][1];
-	  index = i;	
+	  index = i;
+	  console.log(highestScore);
 	}
       }
-      console.log(highestScore);
       initials = highScores.splice(index,1)[0][0];
       scoreList.push([initials,highestScore]);
     }
