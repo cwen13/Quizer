@@ -68,6 +68,7 @@ function timer (sec) {
 	timeEl.textContent = 0;
 	endTheGame(true);
       } else if (!playing) {
+	console.log("Play is false");
 	clearInterval(countDown);
 	// store score and go to end screen
 	timeEl.textContent = 0;
@@ -109,6 +110,7 @@ function displayQuestion(Q, count){
 function checkAnswer(guess,qID) {
   count++;
   if (count >= QnAs['questions'].length) {
+    playing = false;
     endTheGame(true);
   } else {
     displayQuestion(QnAs["questions"], count);
@@ -260,23 +262,21 @@ function endTheGame(wasPlayed) {
       case 0:
 	count = 0;
 	secondsLeft = 90 ;
-	console.log("Switched text" + i);
 	buttonEls[i].textContent = "Want to play again?";
 	buttonEls[i].addEventListener("click", start);
 	break;
       case 1:
-	console.log("Switched text" + i);
 	buttonEls[i].textContent = "Enter your highScore?";
 	buttonEls[i].addEventListener("click", highScorePage);
 	break;
       case 2:
       case 3:
 	buttonEls[i].setAttribute("style", "visibility: hidden;");
-	console.log("Switched text" + i);
 	break;
       }
     }
-  } 
+  }
+  return;
 }
 
 function startTheGame() {
@@ -294,6 +294,7 @@ function startTheGame() {
     buttonEls[i].removeEventListener("click", shutItDown);
     buttonEls[i].removeEventListener("click", getPick);
   }
+  playing = true;
   playTheGame();
 }
   
