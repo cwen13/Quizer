@@ -1,20 +1,3 @@
-/*
-  Functions
-  + in timer
-   - start timer
-   - stop timer
-   - reduce time on wrong answer
-  + init to build home page
-  + render question+
-   - build question text/buttons
-  + check answer
-   - if correct give points and render next question
-   - if wrong reduce time/maybe lose points render next question
-  + check if done
-   - if not go to next question
-   - if done render highscore form
-  */
-
 let timerEl = document.querySelector(".timer");
 let questionEl = document.querySelector("#question");
 let answersEl = document.querySelector("#answers");
@@ -143,6 +126,7 @@ function setUpTearDown (start) {
 }
 
 function playTheGame() {
+  score = 0;
   setUpTearDown(true);
   displayQuestion(QnAs["questions"], count);
   setUpTearDown();
@@ -185,10 +169,10 @@ let enterHighScore = function(event){
     scoreList = JSON.parse(localStorage.getItem("highScores"));
   } catch (e) {
     scoreList = [];
-  }
-  
+  }  
   // add intials entered and score into local Stoarge
-  scoreList.push([initialsEl.value, score]);
+  console.log(scoreEl.textContent);
+  scoreList.push([initialsEl.value, scoreEl.textContent]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
   return 1;  
@@ -249,8 +233,6 @@ function endTheGame(wasPlayed) {
       buttonEls[i].setAttribute("style", "visibility: visible;");
       switch (i) {
       case 0:
-	count = 0;
-	secondsLeft = 90 ;
 	buttonEls[i].textContent = "Want to play again?";
 	buttonEls[i].addEventListener("click", start);
 	break;
@@ -281,8 +263,9 @@ function startTheGame() {
     buttonEls[i].removeEventListener("click", highScorePage);
     buttonEls[i].removeEventListener("click", shutItDown);
   }
+  count = 0;
+  secondsLeft = 90 ;
   playing = true;
-  score = 0;
   scoreEl.textContent = score;
   playTheGame();
 }
@@ -300,15 +283,59 @@ const QnAs = {
 		 "C. String",
 		 "D. Funciton"],
       "answer": "A"},
-    {"question": "String for the question1?",
-     "answers": ["A if you go",
-		 "B if you see",
-		 "C if you play",
-		 "D if your good"],
+    {"question": "Given an array what is the index of the first element?",
+     "answers": ["A. 1",
+		 "B. 0",
+		 "C. A",
+		 "D. a"],
       "answer": "B"},
-    {"question": "String for this question2?",
-     "answers": ["A when its dark",
-		 "B when its storms",
-		 "C when the light is dim",
-		 "D when the strong walk no more"],
-     "answer": "C"}]}
+    {"question": "What is it called when a function calls it self?",
+     "answers": ["A. Reflection",
+		 "B. Refraction",
+		 "C. Recursive",
+		 "D. Retrograde"],
+     "answer": "C"},
+    {"question": "Is a semi-colon required at the end of every line of JS code?",
+     "answers": ["A. Yes",
+		 "B. No",
+		 "C. Inside of a loop body",
+		 "D. Inside of an if body"],
+     "answer": "B"},
+    {"question": "How is JS typed?",
+     "answers": ["A. Dynamic",
+		 "B. Static",
+		 "C. Inferred",
+		 "D. Linear"],
+     "answer": "A"},
+    {"question": "JavaScript is a sub set of Java?",
+     "answers": ["A. Yes",
+		 "B. No",
+		 "C. Everybit",
+		 "D. Everybyte"],
+     "answer": "A"},
+    {"question": "JavaScript was created in?",
+     "answers": ["A. 1984",
+		 "B. 1993",
+		 "C. 1954",
+		 "D. 1995"],
+     "answer": "D"},
+    {"question": "How many threads does JavaScript have?",
+     "answers": ["A. One",
+		 "B. Two",
+		 "C. Multi-threads",
+		 "D. Three"],
+     "answer": "A"},
+    {"question": "JSON stands for",
+     "answers": ["A. Just Store Objects Now",
+		 "B. JavaScript Object Notation",
+		 "C. Java Scan Object Notation",
+		 "D. JSON Style Of Notation"],
+     "answer": "B"},
+    {"question": "Typscript is what?",
+     "answers": ["A. JavaScript with capital letters.",
+		 "B. Strict syntactical superset of JavaScript.",
+		 "C. Type based JavaScript.",
+		 "D. Javascript with a fancy name."],
+     "answer": "B"}
+  ]
+}
