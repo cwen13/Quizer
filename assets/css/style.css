@@ -1,0 +1,91 @@
+:root {
+}
+
+* {
+}
+
+html {
+  font-size: 62.5%;
+}
+
+h1 {
+  margin: 1rem 0rem;
+  font: 10rem;
+}
+
+header {
+  margin: 0.25rem 0.25rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.5rem;
+}
+
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+a {
+  background: black;
+  color: white;
+}
+
+.timer {
+  visibility: hidden;
+}
+
+.button {
+  margin: 0.25rem;
+}
+
+.highScores  {
+  visibility: hidden;
+  background: white;
+  color:blue;
+}
+
+
+#question {
+  font-size: 3rem;
+  align-content:center;
+  text-align: center;
+  margin: 3rem 0rem 1rem 0rem;
+  width: 75%;
+}
+
+#highScore {
+  visibility: hidden;
+}
+
+#highScoreInput {
+  visibility: hidden;
+}
+
+#answers ol ~ li {
+  font-size: 2rem;
+}
+
+#button1 {
+  visibilty:visible;
+  font-size: 1.5rem;
+}
+
+#button2 {
+  visibility: visible;
+  font-size: 1.5rem;
+}
+
+#button3 {
+  visibility: hidden;
+  font-size: 1.5rem;
+}
+
+#button4 {
+  visibility: hidden;
+  font-size: 1.5rem;
+}

@@ -1,8 +1,0 @@
-# Quizer
-
-
-## Desription
-
-This is a in browser JavaScript multiple choice quiz game that let you save your
-high scores. It does this with localStorage so you can come back ater and see if
-your score is still the best.

@@ -1,0 +1,13 @@
+function showHighScores() {
+  let highScores = localStorage.getItem("highScores");
+  // highScore shouuld be
+  for (let i=0; i<highScores.length; i++) {
+    for (let j=0; j<highScores.length;j++) {
+      let highScore = 
+
+
+    }
+  }
+}
+
+showHighScores();
