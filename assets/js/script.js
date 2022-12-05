@@ -12,13 +12,14 @@ let scoreEl = document.querySelector("#score");
 let secondsLeft = 90;
 let score = 0;
 let count = 0;
-let guess;
+let guess = true;
 let isCorrect = false;
 let highScore = [];
 let selection = "";
 let playing = true;
+// Questions and answers are in JSON at the bottom of file
 
-function timer (secondsLeft) {
+function timer () {
   let countDown = setInterval(function(){
     timeEl.textContent = secondsLeft;
       if (secondsLeft <= 0){
@@ -40,12 +41,15 @@ function timer (secondsLeft) {
 /*------------------------------------------------*
  *-------------------Game-play--------------------*
  *------------------------------------------------*/
+
+// startTheGame wrapper
 let start = function startGame(event){
-  timer(secondsLeft); 
+  timer(); 
   startTheGame();
   return 1;
 }
 
+// endTheGame wrapper
 let end = function endGame(event){
   endTheGame(false);
   return 1;
@@ -66,46 +70,48 @@ function displayQuestion(Q, count){
   return 1;
 }
 
+// check answer and progress to the next question
 function checkAnswer(guess,qID) {
   count++;
   if (count >= QnAs['questions'].length) {
     playing = false;
     endTheGame(true);
   } else {
-    displayQuestion(QnAs["questions"], count);
-    if (guess !== qID){
-      isCorrect = false;
-      secondsLeft -= 15;
-      return false;
-    }
+    displayQuestion(QnAs["questions"], count);    
   }
-  isCorrect = true;
-  score += 10;
-  scoreEl.textContent = score;
+  if (guess == qID) {
+    isCorrect = true;
+    score += 10;
+    scoreEl.textContent = score;
+  } else {
+    isCorrect = false;
+    secondsLeft -= 15;
+  }
   showResult(isCorrect);
-  return true;
+  return isCorrect;
 }
 
+// retriveing pick from the player
 let getPick = function pick(event) {
   selection = event.currentTarget.textContent.charAt(0);
   guess = checkAnswer(selection,QnAs['questions'][count]['answer']);
   return 1;
 }
 
+// flash if the prevvious quesiton is correct or wrong
 function showResult(result) {  
   function ResultsTimer (sec) {
-    let countDown = setInterval(function(){
+    let resultCountDown = setInterval(function(){
       sec--;
       timeEl.textContent = sec;
       if (sec <= 0){
-	clearInterval(countDown);
+	clearInterval(resultCountDown);
 	resultEl.setAttribute("style","visibility: hidden");
       }
-    },500);
+    },250);
   }
   let answerCheck;
   // show if choice is correct/wrong and add solid overline to display
-  console.log(result);
   if (result) {
     answerCheck = "Correct";
   } else {
@@ -134,6 +140,7 @@ function setUpTearDown (start) {
   return 1;
 }
 
+// game play
 function playTheGame() {
   score = 0;
   setUpTearDown(true);
@@ -145,6 +152,8 @@ function playTheGame() {
 /*------------------------------------------------
  *----------------End-Game-track------------------
  *------------------------------------------------*/
+
+// shutItDown wrapper
 let shutItDown = function (event) {
   shutDown();
 }
@@ -156,7 +165,7 @@ function shutDown() {
 	timerEl.setAttribute("style", "visibility: hidden;");
       } else {
 	let blackLink = document.createElement("a")
-	blackLink.textContent = "Fine, see you later.";
+	blackLink.textContent = "Click to leave this quiz.";
 	blackLink.setAttribute("href", "./blackOut.html");
 	buttonEls[i].textContent = "";
 	buttonEls[i].setAttribute("style", "background-color: black;");
@@ -166,6 +175,7 @@ function shutDown() {
   return 1;
 }
 
+// high score enter wrapper
 let enterHighScore = function(event){
   event.preventDefault()
   /* place score from the input box in the highscore list
@@ -212,6 +222,7 @@ function highScorePage() {
       break;
     }
   }
+  return 1;
 }
 
 function endTheGame(wasPlayed) {
@@ -226,7 +237,7 @@ function endTheGame(wasPlayed) {
   }
   // if no game was played
   if (!wasPlayed) {
-    questionEl.textContent = "You didn't want to play the game?";
+    questionEl.textContent = "You didn't want to play the quiz game?";
     // keep button0's listener but change text
     buttonEls[0].textContent = "No, I actually want to play.";
     // relink up button1 and text
@@ -272,16 +283,17 @@ function startTheGame() {
     buttonEls[i].removeEventListener("click", shutItDown);
   }
   count = 0;
-  secondsLeft = 90 ;
+  secondsLeft = 90;
   playing = true;
   scoreEl.textContent = score;
   playTheGame();
+  return 1;
 }
 
 // wrapper for the start of the game
 startScreen();
 
-/* JS file for questions and answers
+/* JSON for questions and answers
  *--------JSON-Questions-&-Answers------------*/
 const QnAs = {
   "questions": [
