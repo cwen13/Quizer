@@ -73,17 +73,18 @@ function checkAnswer(guess,qID) {
     endTheGame(true);
   } else {
     displayQuestion(QnAs["questions"], count);
-    if (guess !== qID){
-      isCorrect = false;
-      secondsLeft -= 15;
-      return false;
-    }
+    
   }
-  isCorrect = true;
-  score += 10;
-  scoreEl.textContent = score;
-  showResult(isCorrect);
-  return true;
+  if (guess == qID) {
+    isCorrect = true;
+    score += 10;
+    scoreEl.textContent = score;
+  } else {
+    isCorrect = false;
+    secondsLeft -= 15;
+  }
+    showResult(isCorrect);
+  return isCorrect;
 }
 
 let getPick = function pick(event) {
@@ -94,18 +95,18 @@ let getPick = function pick(event) {
 
 function showResult(result) {  
   function ResultsTimer (sec) {
-    let countDown = setInterval(function(){
+    let resultCountDown = setInterval(function(){
       sec--;
       timeEl.textContent = sec;
       if (sec <= 0){
-	clearInterval(countDown);
+	clearInterval(resultCountDown);
 	resultEl.setAttribute("style","visibility: hidden");
       }
-    },500);
+    },250);
   }
   let answerCheck;
   // show if choice is correct/wrong and add solid overline to display
-  console.log(result);
+  console.log("This is teh ereuslt: " + result);
   if (result) {
     answerCheck = "Correct";
   } else {
