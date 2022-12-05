@@ -12,13 +12,13 @@ let scoreEl = document.querySelector("#score");
 let secondsLeft = 90;
 let score = 0;
 let count = 0;
-let guess;
+let guess = true;
 let isCorrect = false;
 let highScore = [];
 let selection = "";
 let playing = true;
 
-function timer (secondsLeft) {
+function timer () {
   let countDown = setInterval(function(){
     timeEl.textContent = secondsLeft;
       if (secondsLeft <= 0){
@@ -40,12 +40,15 @@ function timer (secondsLeft) {
 /*------------------------------------------------*
  *-------------------Game-play--------------------*
  *------------------------------------------------*/
+
+// startTheGame wrapper
 let start = function startGame(event){
-  timer(secondsLeft); 
+  timer(); 
   startTheGame();
   return 1;
 }
 
+// endTheGame wrapper
 let end = function endGame(event){
   endTheGame(false);
   return 1;
@@ -66,14 +69,14 @@ function displayQuestion(Q, count){
   return 1;
 }
 
+// check answer and progress to the next question
 function checkAnswer(guess,qID) {
   count++;
   if (count >= QnAs['questions'].length) {
     playing = false;
     endTheGame(true);
   } else {
-    displayQuestion(QnAs["questions"], count);
-    
+    displayQuestion(QnAs["questions"], count);    
   }
   if (guess == qID) {
     isCorrect = true;
@@ -83,16 +86,18 @@ function checkAnswer(guess,qID) {
     isCorrect = false;
     secondsLeft -= 15;
   }
-    showResult(isCorrect);
+  showResult(isCorrect);
   return isCorrect;
 }
 
+// retriveing pick from the player
 let getPick = function pick(event) {
   selection = event.currentTarget.textContent.charAt(0);
   guess = checkAnswer(selection,QnAs['questions'][count]['answer']);
   return 1;
 }
 
+// flash if the prevvious quesiton is correct or wrong
 function showResult(result) {  
   function ResultsTimer (sec) {
     let resultCountDown = setInterval(function(){
@@ -106,7 +111,6 @@ function showResult(result) {
   }
   let answerCheck;
   // show if choice is correct/wrong and add solid overline to display
-  console.log("This is teh ereuslt: " + result);
   if (result) {
     answerCheck = "Correct";
   } else {
@@ -135,6 +139,7 @@ function setUpTearDown (start) {
   return 1;
 }
 
+// game play
 function playTheGame() {
   score = 0;
   setUpTearDown(true);
@@ -146,6 +151,8 @@ function playTheGame() {
 /*------------------------------------------------
  *----------------End-Game-track------------------
  *------------------------------------------------*/
+
+// shutItDown wrapper
 let shutItDown = function (event) {
   shutDown();
 }
@@ -167,6 +174,7 @@ function shutDown() {
   return 1;
 }
 
+// high score enter wrapper
 let enterHighScore = function(event){
   event.preventDefault()
   /* place score from the input box in the highscore list
@@ -213,6 +221,7 @@ function highScorePage() {
       break;
     }
   }
+  return 1;
 }
 
 function endTheGame(wasPlayed) {
@@ -273,16 +282,17 @@ function startTheGame() {
     buttonEls[i].removeEventListener("click", shutItDown);
   }
   count = 0;
-  secondsLeft = 90 ;
+  secondsLeft = 90;
   playing = true;
   scoreEl.textContent = score;
   playTheGame();
+  return 1;
 }
 
 // wrapper for the start of the game
 startScreen();
 
-/* JS file for questions and answers
+/* JSON for questions and answers
  *--------JSON-Questions-&-Answers------------*/
 const QnAs = {
   "questions": [
