@@ -17,6 +17,7 @@ let isCorrect = false;
 let highScore = [];
 let selection = "";
 let playing = true;
+// Questions and answers are in JSON at the bottom of file
 
 function timer () {
   let countDown = setInterval(function(){
@@ -164,7 +165,7 @@ function shutDown() {
 	timerEl.setAttribute("style", "visibility: hidden;");
       } else {
 	let blackLink = document.createElement("a")
-	blackLink.textContent = "Fine, see you later.";
+	blackLink.textContent = "Click to leave this quiz.";
 	blackLink.setAttribute("href", "./blackOut.html");
 	buttonEls[i].textContent = "";
 	buttonEls[i].setAttribute("style", "background-color: black;");
@@ -236,7 +237,7 @@ function endTheGame(wasPlayed) {
   }
   // if no game was played
   if (!wasPlayed) {
-    questionEl.textContent = "You didn't want to play the game?";
+    questionEl.textContent = "You didn't want to play the quiz game?";
     // keep button0's listener but change text
     buttonEls[0].textContent = "No, I actually want to play.";
     // relink up button1 and text

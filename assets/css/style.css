@@ -30,7 +30,7 @@ main {
   justify-content: center;
 }
 
-a {
+ul li a {
   background: black;
   color: white;
 }
@@ -43,10 +43,9 @@ a {
   margin: 0.25rem;
 }
 
+
 .highScores  {
   visibility: hidden;
-  background: white;
-  color:blue;
 }
 
 
