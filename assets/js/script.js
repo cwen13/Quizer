@@ -188,7 +188,10 @@ let enterHighScore = function(event){
     scoreList = JSON.parse(localStorage.getItem("highScores"));
   } catch (e) {
     scoreList = [];
-  }  
+  }
+  if (scoreList == null) {
+    scoreList = [];
+  }
   // add intials entered and score into local Stoarge
   scoreList.push([initialsEl.value, scoreEl.textContent]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));

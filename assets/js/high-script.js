@@ -44,7 +44,6 @@ function showHighScores() {
 	if (highestScore <  highScores[i][1]) {
 	  highestScore = highScores[i][1];
 	  index = i;
-	  console.log(highestScore);
 	}
       }
       initials = highScores.splice(index,1)[0][0];
