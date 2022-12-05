@@ -190,7 +190,6 @@ let enterHighScore = function(event){
     scoreList = [];
   }  
   // add intials entered and score into local Stoarge
-  console.log(scoreEl.textContent);
   scoreList.push([initialsEl.value, scoreEl.textContent]);
   localStorage.setItem("highScores",JSON.stringify(scoreList));
   window.location.href = "./highScores.html";
