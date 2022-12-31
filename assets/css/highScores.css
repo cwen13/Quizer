@@ -16,6 +16,11 @@ body {
   background: gold;
 }
 
+footer {
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+}
 
 #highScores {
   display: flex;
